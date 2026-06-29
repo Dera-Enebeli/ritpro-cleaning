@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ritpro · Magazine Editorial</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Playfair+Display:opsz,wght@14..32,400..900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Inter, sans-serif; background: #fff; color: #111; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  .container-wide { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+
+  /* TYPOGRAPHY */
+  .serif { font-family: 'Playfair Display', serif; }
+  .huge { font-size: clamp(64px, 8vw, 120px); font-weight: 900; line-height: 0.88; letter-spacing: -0.05em; }
+  .headline { font-size: clamp(36px, 4.5vw, 64px); font-weight: 900; line-height: 1; letter-spacing: -0.04em; }
+  .headline-serif { font-size: clamp(40px, 5vw, 72px); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; font-family: 'Playfair Display', serif; }
+  .pull-quote { font-size: clamp(24px, 3vw, 40px); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
+  .body-copy { font-size: 15px; line-height: 1.7; color: #444; }
+  .byline { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #999; }
+  .folio { font-size: 10px; font-weight: 500; color: #bbb; letter-spacing: 0.1em; }
+
+  /* HEADER */
+  header { border-bottom: 1px solid #ddd; padding: 0 40px; }
+  header .inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo-ed { font-size: 18px; font-weight: 900; letter-spacing: -0.03em; text-decoration: none; color: #111; text-transform: uppercase; }
+  nav { display: flex; align-items: center; gap: 24px; }
+  nav a { text-decoration: none; color: #444; font-size: 12px; font-weight: 500; letter-spacing: 0.03em; }
+  nav a:hover { color: #111; }
+  .ed-cta { border: 1px solid #111; padding: 6px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: #111; }
+
+  /* HERO SPREAD */
+  .hero-spread { display: grid; grid-template-columns: 1fr 1fr; min-height: 85vh; }
+  .hero-text { display: flex; flex-direction: column; justify-content: center; padding: 80px 60px; }
+  .hero-text .byline { margin-bottom: 16px; }
+  .hero-text .huge { margin-bottom: 8px; }
+  .hero-text .body-copy { max-width: 380px; margin-top: 24px; }
+  .hero-actions { margin-top: 32px; display: flex; gap: 16px; }
+  .btn-mag { background: #111; color: #fff; padding: 12px 36px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; display: inline-block; }
+  .btn-mag-outline { border: 1px solid #111; padding: 11px 36px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: #111; display: inline-block; }
+  .hero-image { background: #f0ece8; min-height: 500px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .hero-image-content { text-align: center; }
+  .hero-image-content .folio { margin-bottom: 8px; }
+  .hero-image-content p { font-size: 14px; color: #999; font-style: italic; }
+
+  /* SECTION HEADER */
+  .spread-header { padding: 60px 0 40px; border-bottom: 1px solid #ddd; margin-bottom: 40px; }
+  .spread-header .byline { margin-bottom: 8px; }
+
+  /* SERVICES GRID (Magazine feature spread) */
+  .services-spread { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid #ddd; }
+  .services-spread > div { padding: 40px 0; }
+  .services-spread > div:first-child { border-right: 1px solid #ddd; padding-right: 48px; }
+  .services-spread > div:last-child { padding-left: 48px; }
+  .service-group h3 { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #999; margin-bottom: 20px; }
+  .service-item { padding: 16px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+  .service-item:last-child { border-bottom: none; }
+  .service-item .name { font-size: 15px; font-weight: 600; }
+  .service-item .tag { font-size: 10px; color: #999; font-weight: 500; letter-spacing: 0.05em; }
+  .service-item .price { font-size: 13px; font-weight: 600; color: #666; }
+
+  /* PULL QUOTE SECTION */
+  .pull-section { padding: 80px 0; background: #f8f6f4; text-align: center; }
+  .pull-section blockquote { max-width: 700px; margin: 0 auto; }
+  .pull-section blockquote .pull-quote { font-family: 'Playfair Display', serif; font-style: italic; color: #333; }
+  .pull-section .attribution { font-size: 12px; color: #999; margin-top: 16px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* TRUST SPREAD */
+  .trust-spread { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid #ddd; }
+  .trust-spread > div { padding: 48px 32px; border-right: 1px solid #ddd; }
+  .trust-spread > div:last-child { border-right: none; }
+  .trust-spread h3 { font-size: 18px; font-weight: 700; margin-top: 16px; }
+  .trust-spread p { font-size: 14px; color: #555; line-height: 1.6; margin-top: 8px; }
+  .trust-num { font-size: 36px; font-weight: 200; color: #ddd; line-height: 1; }
+
+  /* FULL BLEED */
+  .full-bleed { background: #111; color: #fff; padding: 80px 0; }
+  .full-bleed .container-wide { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 48px; }
+  .full-bleed h3 { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #888; }
+  .full-bleed .amount { font-size: 36px; font-weight: 900; letter-spacing: -0.03em; margin-top: 12px; color: #fff; }
+  .full-bleed .per { font-size: 13px; color: #666; margin-top: 4px; }
+  .full-bleed .desc { font-size: 14px; color: #888; margin-top: 12px; line-height: 1.6; }
+
+  /* CTA */
+  .cta-spread { display: grid; grid-template-columns: 1fr 1fr; min-height: 300px; }
+  .cta-text { display: flex; flex-direction: column; justify-content: center; padding: 60px; }
+  .cta-text h2 { font-size: clamp(28px, 3vw, 40px); font-weight: 900; letter-spacing: -0.03em; }
+  .cta-text p { font-size: 15px; color: #555; margin-top: 12px; }
+  .cta-text .btn-mag { margin-top: 24px; align-self: flex-start; }
+  .cta-image { background: #f0ece8; display: flex; align-items: center; justify-content: center; }
+  .cta-image p { font-size: 13px; color: #999; font-style: italic; }
+
+  /* FOOTER */
+  footer { padding: 60px 40px 24px; background: #111; color: #fff; }
+  footer .grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 64px; }
+  footer h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #666; margin-bottom: 16px; }
+  footer a { display: block; text-decoration: none; color: #999; font-size: 13px; margin-bottom: 6px; }
+  footer a:hover { color: #fff; }
+  .footer-logo { font-size: 18px; font-weight: 900; letter-spacing: -0.03em; text-transform: uppercase; }
+  .footer-tag { font-size: 13px; color: #666; margin-top: 8px; }
+  .copy { max-width: 1400px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,.08); padding-top: 24px; margin-top: 48px; font-size: 11px; color: #555; text-align: center; }
+
+  @media (max-width: 768px) {
+    .container, .container-wide { padding: 0 20px; }
+    header { padding: 0 20px; }
+    .hero-spread { grid-template-columns: 1fr; }
+    .hero-text { padding: 60px 24px; }
+    .services-spread { grid-template-columns: 1fr; }
+    .services-spread > div:first-child { border-right: none; padding-right: 0; }
+    .services-spread > div:last-child { padding-left: 0; }
+    .trust-spread { grid-template-columns: 1fr; }
+    .full-bleed .container-wide { grid-template-columns: 1fr; }
+    .cta-spread { grid-template-columns: 1fr; }
+    footer .grid { grid-template-columns: 1fr; gap: 32px; }
+    footer { padding: 40px 20px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="inner">
+    <a href="/" class="logo-ed">Ritpro</a>
+    <nav>
+      <a href="#" style="font-weight:700">Home</a>
+      <a href="#">Services</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="#" class="ed-cta">Get a Quote</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO SPREAD -->
+<section class="hero-spread">
+  <div class="hero-text">
+    <p class="byline">Ritpro Cleaning Services · Est. 2021</p>
+    <h1 class="huge">Clean<br>Spaces.<br>Clear Minds.</h1>
+    <p class="body-copy">Professional cleaning for homes and businesses across the UK. Reliable, insured, built to the highest standard.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-mag">Get a Quote</a>
+      <a href="#" class="btn-mag-outline">Our Services</a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <div class="hero-image-content">
+      <p class="folio">— Feature —</p>
+      <p>Photograph: A clean, light-filled room</p>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<section class="pull-section">
+  <blockquote>
+    <p class="pull-quote">"We don't just clean spaces. We restore the feeling of coming home."</p>
+    <p class="attribution">— Ritpro Team</p>
+  </blockquote>
+</section>
+
+<!-- SERVICES SPREAD -->
+<section>
+  <div class="container-wide">
+    <div class="spread-header">
+      <p class="byline">Service Directory</p>
+      <h2 class="headline-serif">What We Do</h2>
+    </div>
+    <div class="services-spread">
+      <div>
+        <div class="service-group">
+          <h3>Residential</h3>
+          <div class="service-item"><span class="name">Regular Residential Cleaning</span><span class="tag">Weekly · Fortnightly · Monthly</span><span class="price">from £80</span></div>
+          <div class="service-item"><span class="name">Deep Cleaning</span><span class="tag">One-off intensive</span><span class="price">from £150</span></div>
+          <div class="service-item"><span class="name">End-of-Lease Cleaning</span><span class="tag">Legally required</span><span class="price">£220–£280</span></div>
+          <div class="service-item"><span class="name">Spring Cleaning</span><span class="tag">Seasonal reset</span><span class="price">from £180</span></div>
+          <div class="service-item"><span class="name">Move-In / Move-Out</span><span class="tag">Tenancy change</span><span class="price">from £160</span></div>
+          <div class="service-item"><span class="name">Airbnb Cleaning</span><span class="tag">Guest turnover</span><span class="price">£60–£120</span></div>
+          <div class="service-item"><span class="name">NDIS Cleaning</span><span class="tag">Specialist support</span><span class="price">Quote</span></div>
+          <div class="service-item"><span class="name">Aged Care Home Cleaning</span><span class="tag">Elderly support</span><span class="price">Quote</span></div>
+          <div class="service-item"><span class="name">Apartment Cleaning</span><span class="tag">Compact spaces</span><span class="price">from £70</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="service-group">
+          <h3>Commercial</h3>
+          <div class="service-item"><span class="name">Office Cleaning</span><span class="tag">Workspace maintenance</span><span class="price">from £120</span></div>
+          <div class="service-item"><span class="name">Medical Centre & Dental Clinic</span><span class="tag">Healthcare grade</span><span class="price">Quote</span></div>
+          <div class="service-item"><span class="name">Childcare Centre Cleaning</span><span class="tag">Safe environments</span><span class="price">Quote</span></div>
+          <div class="service-item"><span class="name">Retail Shop Cleaning</span><span class="tag">Customer-ready</span><span class="price">from £100</span></div>
+          <div class="service-item"><span class="name">Restaurant & Café Cleaning</span><span class="tag">Food safety</span><span class="price">Quote</span></div>
+          <div class="service-item"><span class="name">Gym Cleaning</span><span class="tag">High-traffic hygiene</span><span class="price">Quote</span></div>
+          <div class="service-item"><span class="name">Warehouse Cleaning</span><span class="tag">Industrial spaces</span><span class="price">Quote</span></div>
+          <div class="service-item"><span class="name">Body Corporate Cleaning</span><span class="tag">Common areas</span><span class="price">Quote</span></div>
+          <div class="service-item"><span class="name">School Cleaning</span><span class="tag">Educational facilities</span><span class="price">Quote</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE 2 -->
+<section class="pull-section" style="background:#fff;border-top:1px solid #eee;border-bottom:1px solid #eee">
+  <blockquote>
+    <p class="pull-quote" style="font-size:clamp(20px,2.5vw,32px)">From one-off resets to recurring contracts worth £500k+ — we deliver the same standard of excellence.</p>
+  </blockquote>
+</section>
+
+<!-- TRUST SPREAD -->
+<section>
+  <div class="container-wide">
+    <div class="spread-header" style="border-bottom-color:#ddd">
+      <p class="byline">Why Ritpro</p>
+      <h2 class="headline-serif">The Difference</h2>
+    </div>
+    <div class="trust-spread">
+      <div>
+        <div class="trust-num">01</div>
+        <h3>Fully Insured & Vetted</h3>
+        <p>All staff are police-checked, insured, and trained to professional standards. Every team member carries the confidence of a rigorously screened professional.</p>
+      </div>
+      <div>
+        <div class="trust-num">02</div>
+        <h3>Reliable & Consistent</h3>
+        <p>Same team assigned to recurring bookings. Punctual, professional, dependable — so you always know what to expect.</p>
+      </div>
+      <div>
+        <div class="trust-num">03</div>
+        <h3>Satisfaction Guaranteed</h3>
+        <p>If it's not right, we'll make it right. No questions asked. Our reputation depends on your satisfaction.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL BLEED PRICING -->
+<section class="full-bleed">
+  <div class="container-wide">
+    <div>
+      <h3>End of Tenancy</h3>
+      <p class="amount">£220 – £280</p>
+      <p class="per">per job</p>
+      <p class="desc">Legally required bond cleaning between tenancies. Full inspection-ready service.</p>
+    </div>
+    <div>
+      <h3>Airbnb Cleaning</h3>
+      <p class="amount">£60 – £120</p>
+      <p class="per">per clean</p>
+      <p class="desc">Turnover cleaning between guests. One host can generate £2,400/month in revenue.</p>
+    </div>
+    <div>
+      <h3>Government Contracts</h3>
+      <p class="amount">£10k – £500k+</p>
+      <p class="per">per contract</p>
+      <p class="desc">Schools, public buildings, and council facilities. Highest value, highest standard.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SPREAD -->
+<section class="cta-spread">
+  <div class="cta-text">
+    <p class="byline" style="margin-bottom:8px">Get Started</p>
+    <h2>Ready for a Cleaner Space?</h2>
+    <p>Get in touch today for a free, no-obligation quote. We'll match the right service to your space.</p>
+    <a href="#" class="btn-mag">Book Now</a>
+  </div>
+  <div class="cta-image">
+    <p>Placeholder: Clean interior photograph</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="grid">
+    <div>
+      <p class="footer-logo">Ritpro</p>
+      <p class="footer-tag">Clean Spaces. Clear Minds.</p>
+      <p style="font-size:13px;color:#555;margin-top:16px;line-height:1.6">Professional cleaning across the UK for residential and commercial clients.</p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <a href="#">Home</a>
+      <a href="#">Services</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a href="#">020 7946 0958</a>
+      <a href="#">info@ritprocleaning.co.uk</a>
+      <p style="font-size:13px;color:#666;margin-top:8px;line-height:1.5">71-75 Shelton Street<br>London, WC2H 9JQ</p>
+    </div>
+  </div>
+  <div class="copy">© 2026 Ritpro Cleaning Services. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
