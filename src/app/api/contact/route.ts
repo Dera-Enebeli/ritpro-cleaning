@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     }
 
     const emailText = [
-      `New enquiry from ritprocleaning.co.uk`,
+      `New enquiry from Ritepro Cleaning Services`,
       ``,
       `Name: ${name}`,
       `Email: ${email}`,
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     if (resend) {
       await resend.emails.send({
         from: "Ritpro Contact <onboarding@resend.dev>",
-        to: "info@ritprocleaning.co.uk",
+        to: "riteprocleaningservices@gmail.com",
         subject: `New enquiry from ${name} — ${service}`,
         text: emailText,
       });

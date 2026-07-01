@@ -7,9 +7,11 @@ import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "#", label: "Services" },
-  { href: "#", label: "About" },
-  { href: "#", label: "Get a Quote" },
+  { href: "/residential", label: "Residential" },
+  { href: "/commercial", label: "Commercial" },
+  { href: "/providers", label: "Providers" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Header() {
@@ -39,7 +41,7 @@ export default function Header() {
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
                 className={`text-sm font-medium transition-colors ${
                   isActive(link.href)
@@ -51,7 +53,7 @@ export default function Header() {
               </Link>
             ))}
             <Link
-              href="#"
+              href="/contact"
               className="bg-black text-white px-5 py-2 rounded text-sm font-semibold hover:bg-gray-800 transition-colors"
             >
               Get a Quote
@@ -93,7 +95,7 @@ export default function Header() {
             <div className="flex flex-col gap-3">
               {navLinks.map((link) => (
                 <Link
-                  key={link.href}
+                  key={link.label}
                   href={link.href}
                   className={`text-sm font-medium transition-colors ${
                     isActive(link.href)
@@ -106,7 +108,7 @@ export default function Header() {
                 </Link>
               ))}
               <Link
-                href="#"
+                href="/contact"
                 className="bg-black text-white px-5 py-2 rounded text-sm font-semibold text-center hover:bg-gray-800 transition-colors"
                 onClick={() => setMobileOpen(false)}
               >

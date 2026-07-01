@@ -30,15 +30,36 @@ export default function Footer() {
               >
                 Home
               </Link>
-              <span className="text-sm text-gray-500 cursor-default">
-                Services
-              </span>
-              <span className="text-sm text-gray-500 cursor-default">
+              <Link
+                href="/residential"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
+                Residential
+              </Link>
+              <Link
+                href="/commercial"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
+                Commercial
+              </Link>
+              <Link
+                href="/providers"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
+                Providers
+              </Link>
+              <Link
+                href="/about"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
                 About
-              </span>
-              <span className="text-sm text-gray-500 cursor-default">
-                Get a Quote
-              </span>
+              </Link>
+              <Link
+                href="/contact"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
+                Contact
+              </Link>
             </div>
           </div>
 
@@ -47,9 +68,9 @@ export default function Footer() {
               Contact
             </h3>
             <div className="flex flex-col gap-2 text-sm text-gray-400">
-              <span>020 7946 0958</span>
-              <span>info@ritprocleaning.co.uk</span>
-              <span>71-75 Shelton Street, London, WC2H 9JQ</span>
+              <a href="tel:+61434139623" className="hover:text-white transition-colors">+61 434 139 623</a>
+              <a href="mailto:riteprocleaningservices@gmail.com" className="hover:text-white transition-colors">riteprocleaningservices@gmail.com</a>
+              <span>Brisbane, QLD</span>
             </div>
           </div>
         </div>
