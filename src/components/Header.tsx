@@ -53,7 +53,7 @@ export default function Header() {
               </Link>
             ))}
             <Link
-              href="/contact"
+              href="/quote"
               className="bg-black text-white px-5 py-2 rounded text-sm font-semibold hover:bg-gray-800 transition-colors"
             >
               Get a Quote
@@ -92,7 +92,7 @@ export default function Header() {
 
         {mobileOpen && (
           <nav className="md:hidden pb-4 border-t border-gray-100 pt-4">
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-7">
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
@@ -108,7 +108,7 @@ export default function Header() {
                 </Link>
               ))}
               <Link
-                href="/contact"
+                href="/quote"
                 className="bg-black text-white px-5 py-2 rounded text-sm font-semibold text-center hover:bg-gray-800 transition-colors"
                 onClick={() => setMobileOpen(false)}
               >

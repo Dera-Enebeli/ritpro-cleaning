@@ -13,6 +13,33 @@ const residentialServices = [
   "Apartment cleaning",
 ];
 
+const standardPricing = [
+  { label: "1 Bed / 1 Bath", price: "$150" },
+  { label: "2 Bed / 1 Bath", price: "$210" },
+  { label: "3 Bed / 2 Bath", price: "$290" },
+];
+
+const deepCleanPrice = "$280 – $550";
+
+const eolPricing = [
+  { label: "2 Bedroom", price: "$450" },
+  { label: "3 Bedroom", price: "$700" },
+];
+
+const addonPricing = [
+  { label: "Carpet Cleaning (3 rooms)", price: "$210" },
+  { label: "Oven Cleaning", price: "$190" },
+  { label: "Window Cleaning (House)", price: "$400" },
+  { label: "Pressure Washing", price: "$700" },
+  { label: "Airbnb Turnover", price: "$270" },
+];
+
+const recurringCallout = [
+  { freq: "Weekly", price: "from $149" },
+  { freq: "Fortnightly", price: "from $159" },
+  { freq: "Monthly", price: "from $169" },
+];
+
 export default function ResidentialPage() {
   return (
     <div>
@@ -40,20 +67,20 @@ export default function ResidentialPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-              <p className="text-white font-bold text-lg">$220 – $280</p>
+              <p className="text-white font-bold text-lg">$450 – $700</p>
               <p className="text-xs text-gray-400">End of Tenancy</p>
             </div>
             <div>
-              <p className="text-white font-bold text-lg">$60 – $120</p>
+              <p className="text-white font-bold text-lg">$270</p>
               <p className="text-xs text-gray-400">Airbnb Clean</p>
             </div>
             <div>
-              <p className="text-white font-bold text-lg">$2,400/mo</p>
-              <p className="text-xs text-gray-400">Per Host (Airbnb)</p>
+              <p className="text-white font-bold text-lg">$149</p>
+              <p className="text-xs text-gray-400">Weekly From</p>
             </div>
             <div>
-              <p className="text-white font-bold text-lg">$10k – $500k+</p>
-              <p className="text-xs text-gray-400">Gov Contracts</p>
+              <p className="text-white font-bold text-lg">$150</p>
+              <p className="text-xs text-gray-400">Standard Clean From</p>
             </div>
           </div>
         </div>
@@ -81,19 +108,116 @@ export default function ResidentialPage() {
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
+      {/* PRICING */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-black">
+              Pricing
+            </h2>
+            <div className="w-12 h-0.5 bg-terracotta mx-auto mt-4" />
+            <p className="mt-4 text-gray-500 text-sm max-w-xl mx-auto">
+              Fixed-price quotes — no surprises, no hidden fees.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Standard Clean */}
+            <div className="bg-white rounded-xl border border-gray-100 p-6">
+              <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                Standard Clean
+              </h3>
+              <div className="space-y-3">
+                {standardPricing.map((row) => (
+                  <div key={row.label} className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">{row.label}</span>
+                    <span className="text-sm font-bold text-black">{row.price}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Deep Clean */}
+            <div className="bg-white rounded-xl border border-gray-100 p-6">
+              <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                Deep Clean
+              </h3>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Any home size</span>
+                <span className="text-sm font-bold text-black">{deepCleanPrice}</span>
+              </div>
+              <p className="text-xs text-gray-400 mt-3">
+                Thorough top-to-bottom clean for heavily soiled or long-neglected homes.
+              </p>
+            </div>
+
+            {/* End of Lease */}
+            <div className="bg-white rounded-xl border border-gray-100 p-6">
+              <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                End of Lease
+              </h3>
+              <div className="space-y-3">
+                {eolPricing.map((row) => (
+                  <div key={row.label} className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">{row.label}</span>
+                    <span className="text-sm font-bold text-black">{row.price}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-gray-400 mt-3">
+                Bond-back guaranteed. Other sizes quoted individually.
+              </p>
+            </div>
+
+            {/* Add-Ons */}
+            <div className="bg-white rounded-xl border border-gray-100 p-6">
+              <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                Add-Ons
+              </h3>
+              <div className="space-y-2">
+                {addonPricing.map((row) => (
+                  <div key={row.label} className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">{row.label}</span>
+                    <span className="text-sm font-bold text-black">{row.price}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Recurring callout */}
+          <div className="mt-8 bg-white rounded-xl border border-gray-100 p-6 text-center">
+            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">
+              Save with Regular Cleaning
+            </h3>
+            <div className="flex justify-center gap-8 flex-wrap">
+              {recurringCallout.map((r) => (
+                <div key={r.freq} className="text-center">
+                  <p className="text-xl font-bold text-black">{r.price}</p>
+                  <p className="text-xs text-gray-500">{r.freq}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-gray-400 mt-3">
+              Starting from 1-bedroom standard clean. Pricing adjusts for larger homes.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-black">
             Ready for a Cleaner Home?
           </h2>
           <p className="mt-3 text-gray-500">
-            Get in touch for a free, no-obligation quote.
+            Get your instant quote in 60 seconds — no waiting, no obligation.
           </p>
           <Link
-            href="/contact"
+            href="/quote"
             className="mt-6 inline-block bg-black text-white px-8 py-3 rounded text-sm font-bold hover:bg-gray-800 transition-colors"
           >
-            Get a Free Quote
+            Get Your Quote
           </Link>
         </div>
       </section>

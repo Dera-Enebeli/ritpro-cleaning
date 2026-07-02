@@ -1,14 +1,14 @@
 import Link from "next/link";
 
 const topServices = [
-  { num: "01", title: "Regular Residential Cleaning", desc: "Weekly, fortnightly or monthly home cleans tailored to your routine." },
-  { num: "02", title: "Commercial Cleaning", desc: "Professional commercial cleaning for offices and workspaces." },
-  { num: "03", title: "Airbnb Cleaning", desc: "Turnover cleans between guests. From $60–$120 per clean." },
-  { num: "04", title: "End-of-Lease Cleaning", desc: "Legally required bond cleaning. $220–$280 per job." },
+  { num: "01", title: "Regular Residential Cleaning", desc: "Weekly, fortnightly or monthly home cleans tailored to your routine. From $150." },
+  { num: "02", title: "Commercial Cleaning", desc: "Professional commercial cleaning for offices and workspaces. From $600 per visit." },
+  { num: "03", title: "Airbnb Cleaning", desc: "Turnover cleans between guests. From $270 per clean." },
+  { num: "04", title: "End-of-Lease Cleaning", desc: "Legally required bond cleaning. $450–$700 per job." },
   { num: "05", title: "NDIS Cleaning", desc: "Specialist cleaning for NDIS participants and support environments." },
-  { num: "06", title: "Carpet Cleaning", desc: "Deep steam cleaning for fresh, stain-free carpets." },
-  { num: "07", title: "Pressure Washing", desc: "Exterior cleaning for driveways, patios and pathways." },
-  { num: "08", title: "Window Cleaning", desc: "Streak-free interior and exterior window cleaning." },
+  { num: "06", title: "Carpet Cleaning", desc: "Deep steam cleaning for fresh, stain-free carpets. From $210." },
+  { num: "07", title: "Pressure Washing", desc: "Exterior cleaning for driveways, patios and pathways. From $700." },
+  { num: "08", title: "Window Cleaning", desc: "Streak-free interior and exterior window cleaning. From $400." },
   { num: "09", title: "Builders' Cleans", desc: "Post-construction removal of dust, debris and residue." },
   { num: "10", title: "Body Corporate Cleaning", desc: "Common area maintenance for apartment blocks and estates." },
 ];
@@ -28,10 +28,44 @@ const trustPoints = [
   },
 ];
 
-const pricingHighlights = [
-  { label: "End of Tenancy", range: "$220 – $280", per: "per job" },
-  { label: "Airbnb Clean", range: "$60 – $120", per: "per clean" },
-  { label: "Government Contracts", range: "$10k – $500k+", per: "per contract" },
+const pricingCategories = [
+  {
+    title: "Standard Clean",
+    rows: [
+      { label: "1 Bed / 1 Bath", price: "$150" },
+      { label: "2 Bed / 1 Bath", price: "$210" },
+      { label: "3 Bed / 2 Bath", price: "$290" },
+    ],
+  },
+  {
+    title: "Deep Clean",
+    rows: [
+      { label: "Any home size", price: "$280 – $550" },
+    ],
+  },
+  {
+    title: "End of Lease",
+    rows: [
+      { label: "2 Bedroom", price: "$450" },
+      { label: "3 Bedroom", price: "$700" },
+    ],
+  },
+  {
+    title: "Add-On Services",
+    rows: [
+      { label: "Carpet Cleaning (3 rooms)", price: "$210" },
+      { label: "Oven Cleaning", price: "$190" },
+      { label: "Window Cleaning (House)", price: "$400" },
+      { label: "Pressure Washing", price: "$700" },
+      { label: "Airbnb Turnover", price: "$270" },
+    ],
+  },
+];
+
+const recurringCallout = [
+  { freq: "Weekly", price: "from $149" },
+  { freq: "Fortnightly", price: "from $159" },
+  { freq: "Monthly", price: "from $169" },
 ];
 
 export default function HomePage() {
@@ -69,7 +103,7 @@ export default function HomePage() {
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link
-                  href="/contact"
+                  href="/quote"
                   className="inline-flex items-center gap-2 bg-white text-black px-8 py-3.5 rounded text-sm font-bold hover:bg-gray-100 transition-colors"
                 >
                   Get a Free Quote
@@ -155,7 +189,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PRICING HIGHLIGHTS */}
+      {/* PRICING */}
       <section className="py-20 bg-black text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -163,20 +197,57 @@ export default function HomePage() {
               Transparent Pricing
             </h2>
             <div className="w-12 h-0.5 bg-white/30 mx-auto mt-4" />
+            <p className="mt-4 text-gray-400 text-sm max-w-xl mx-auto">
+              Fixed-price quotes — no surprises, no hidden fees.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {pricingHighlights.map((item) => (
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {pricingCategories.map((cat) => (
               <div
-                key={item.label}
-                className="text-center p-8 rounded-lg border border-gray-800"
+                key={cat.title}
+                className="bg-white/5 border border-gray-800 rounded-xl p-6"
               >
-                <h3 className="text-lg font-semibold text-gray-300">{item.label}</h3>
-                <p className="mt-2 text-3xl font-extrabold text-white">
-                  {item.range}
-                </p>
-                <p className="mt-1 text-sm text-gray-500">{item.per}</p>
+                <h3 className="text-sm font-bold text-gray-300 uppercase tracking-wider mb-4">
+                  {cat.title}
+                </h3>
+                <div className="space-y-3">
+                  {cat.rows.map((row) => (
+                    <div key={row.label} className="flex justify-between items-center">
+                      <span className="text-sm text-gray-400">{row.label}</span>
+                      <span className="text-sm font-bold text-white">{row.price}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
+          </div>
+
+          {/* Recurring callout */}
+          <div className="mt-10 bg-white/5 border border-gray-800 rounded-xl p-6 text-center">
+            <h3 className="text-sm font-bold text-gray-300 uppercase tracking-wider mb-3">
+              Save with Regular Cleaning
+            </h3>
+            <div className="flex justify-center gap-6 flex-wrap">
+              {recurringCallout.map((r) => (
+                <div key={r.freq} className="text-center">
+                  <p className="text-lg font-bold text-white">{r.price}</p>
+                  <p className="text-xs text-gray-400">{r.freq}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-3">
+              Starting from 1-bedroom standard clean. Pricing adjusts for larger homes.
+            </p>
+          </div>
+
+          <div className="text-center mt-8">
+            <Link
+              href="/quote"
+              className="inline-block bg-white text-black px-8 py-3 rounded text-sm font-bold hover:bg-gray-100 transition-colors"
+            >
+              Get Your Exact Quote
+            </Link>
           </div>
         </div>
       </section>
@@ -188,13 +259,13 @@ export default function HomePage() {
             Ready for a Cleaner Space?
           </h2>
           <p className="mt-4 text-gray-500 text-lg">
-            Get in touch today for a free, no-obligation quote.
+            Get your instant quote in 60 seconds — no waiting, no obligation.
           </p>
           <Link
-            href="/contact"
+            href="/quote"
             className="mt-8 inline-block bg-black text-white px-10 py-4 rounded text-sm font-bold hover:bg-gray-800 transition-colors"
           >
-            Book Now
+            Get a Free Quote
           </Link>
         </div>
       </section>

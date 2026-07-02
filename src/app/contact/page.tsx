@@ -50,10 +50,10 @@ export default function ContactPage() {
     <div>
       <section className="bg-black text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl sm:text-5xl font-extrabold">Get a Quote</h1>
+          <h1 className="text-4xl sm:text-5xl font-extrabold">Contact Us</h1>
           <p className="mt-3 text-lg text-gray-300 max-w-xl">
-            Ready for a cleaner space? Tell us what you need and we will get
-            back to you within 24 hours with a free, no-obligation quote.
+            Have a question or want to discuss your cleaning needs? Send us a
+            message and we will get back to you within 24 hours.
           </p>
         </div>
       </section>
@@ -73,13 +73,13 @@ export default function ContactPage() {
                     Thank You!
                   </h3>
                   <p className="mt-2 text-gray-500 text-sm">
-                    Your quote request has been sent. We will be in touch within 24 hours.
+                    Your message has been sent. We will be in touch within 24 hours.
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}
                     className="mt-6 text-sm text-gray-600 font-semibold hover:text-black underline"
                   >
-                    Request another quote
+                    Send another message
                   </button>
                 </div>
               ) : (
@@ -198,7 +198,7 @@ export default function ContactPage() {
                     type="submit"
                     className="bg-black text-white px-8 py-3 rounded text-sm font-bold hover:bg-gray-800 transition-colors"
                   >
-                    Send Quote Request
+                    Send Message
                   </button>
                 </form>
               )}

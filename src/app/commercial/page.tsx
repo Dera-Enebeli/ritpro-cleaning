@@ -68,7 +68,7 @@ export default function CommercialPage() {
           </p>
           <div className="mt-6">
             <Link
-              href="/contact"
+              href="/quote"
               className="inline-block bg-white text-black px-8 py-3 rounded text-sm font-bold hover:bg-gray-100 transition-colors"
             >
               Get a Quote
@@ -132,6 +132,44 @@ export default function CommercialPage() {
         </div>
       </section>
 
+      {/* PRICING */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-black">
+              Office Cleaning Pricing
+            </h2>
+            <div className="w-12 h-0.5 bg-terracotta mx-auto mt-4" />
+            <p className="mt-4 text-gray-500 text-sm max-w-xl mx-auto">
+              Fixed per-visit pricing based on floor area. No hidden fees.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-xl border border-gray-100 p-6 text-center hover:shadow-md transition-shadow">
+              <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Small</h3>
+              <p className="mt-2 text-3xl font-extrabold text-black">$600</p>
+              <p className="text-sm text-gray-500">per visit</p>
+              <p className="mt-2 text-xs text-gray-400">Less than 5,000 sq ft</p>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-100 p-6 text-center hover:shadow-md transition-shadow">
+              <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Medium</h3>
+              <p className="mt-2 text-3xl font-extrabold text-black">$1,000</p>
+              <p className="text-sm text-gray-500">per visit</p>
+              <p className="mt-2 text-xs text-gray-400">5,000 – 15,000 sq ft</p>
+            </div>
+            <div className="bg-white rounded-xl border border-gray-100 p-6 text-center hover:shadow-md transition-shadow">
+              <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Large</h3>
+              <p className="mt-2 text-3xl font-extrabold text-black">$2,000</p>
+              <p className="text-sm text-gray-500">per visit</p>
+              <p className="mt-2 text-xs text-gray-400">15,000 – 30,000 sq ft</p>
+            </div>
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-6">
+            Larger spaces quoted individually. Contact us for a custom proposal.
+          </p>
+        </div>
+      </section>
+
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -187,7 +225,7 @@ export default function CommercialPage() {
             Let us take facility management off your plate.
           </p>
           <Link
-            href="/contact"
+            href="/quote"
             className="mt-6 inline-block bg-black text-white px-8 py-3 rounded text-sm font-bold hover:bg-gray-800 transition-colors"
           >
             Get a Quote
