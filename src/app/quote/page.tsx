@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 type Step = 0 | 1 | 2 | 3 | 4 | 5;
@@ -513,27 +514,12 @@ export default function QuotePage() {
               <p className="mt-2 text-gray-500 text-sm">
                 Your quote request has been sent. We&apos;ll contact you as soon as possible, usually within 1–2 hours.
               </p>
-              <button
-                onClick={() => {
-                  setSubmitted(false);
-                  setStep(0);
-                  setService("");
-                  setPropertyType("");
-                  setBedrooms(1);
-                  setBathrooms(1);
-                  setExtras([]);
-                  setFrequency("One-off");
-                  setName("");
-                  setEmail("");
-                  setPhone("");
-                  setPostcode("");
-                  setWhenNeeded("");
-                  setNotes("");
-                }}
-                className="mt-6 text-sm text-gray-600 font-semibold hover:text-black underline"
+              <Link
+                href="/"
+                className="mt-6 inline-block text-sm text-gray-600 font-semibold hover:text-black underline"
               >
-                Request another quote
-              </button>
+                Return to Home
+              </Link>
             </div>
           </div>
         </section>
