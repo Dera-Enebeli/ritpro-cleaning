@@ -480,7 +480,7 @@ export default function QuotePage() {
               {sending ? "Sending..." : "Request This Quote"}
             </button>
             <p className="text-xs text-gray-400 text-center mt-3">
-              We&apos;ll get back to you within 24 hours. No obligation.
+              We&apos;ll contact you as soon as possible, usually within 1–2 hours.
             </p>
           </div>
         );
@@ -511,7 +511,7 @@ export default function QuotePage() {
               </div>
               <h3 className="mt-4 text-xl font-bold text-black">Thank You!</h3>
               <p className="mt-2 text-gray-500 text-sm">
-                Your quote request has been sent. We&apos;ll be in touch within 24 hours.
+                Your quote request has been sent. We&apos;ll contact you as soon as possible, usually within 1–2 hours.
               </p>
               <button
                 onClick={() => {
