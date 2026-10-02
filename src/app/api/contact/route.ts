@@ -1,46 +1,60 @@
-import { Resend } from "resend";
 import { NextRequest } from "next/server";
-
-const resendApiKey = process.env.RESEND_API_KEY;
-const resend = resendApiKey ? new Resend(resendApiKey) : null;
+import { formatEnquiry, sendEnquiry } from "@/lib/email";
+import { clientIp, field, isEmail, rateLimit, singleLine } from "@/lib/request";
 
 export async function POST(request: NextRequest) {
-  try {
-    const { name, email, phone, service, message } = await request.json();
+  const ip = clientIp(request);
 
-    if (!name || !email || !service || !message) {
-      return Response.json(
-        { error: "Name, email, service and message are required." },
-        { status: 400 }
-      );
-    }
-
-    const emailText = [
-      `New enquiry from Ritepro Cleaning Services`,
-      ``,
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Phone: ${phone || "Not provided"}`,
-      `Service: ${service}`,
-      ``,
-      `Message:`,
-      `${message}`,
-    ].join("\n");
-
-    if (resend) {
-      await resend.emails.send({
-        from: "Ritpro Contact <onboarding@resend.dev>",
-        to: "riteprocleaningservices@gmail.com",
-        subject: `New enquiry from ${name} — ${service}`,
-        text: emailText,
-      });
-    }
-
-    return Response.json({ success: true });
-  } catch {
+  const limit = rateLimit(`contact:${ip}`, { limit: 5, windowMs: 60_000 });
+  if (!limit.ok) {
     return Response.json(
-      { error: "Failed to send message. Please try again later." },
-      { status: 500 }
+      { error: "Too many requests. Please try again in a minute." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } }
+    );
+  }
+
+  let body: Record<string, unknown>;
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ error: "Invalid request." }, { status: 400 });
+  }
+
+  const name = singleLine(body.name, 120);
+  const email = singleLine(body.email, 254);
+  const phone = singleLine(body.phone, 40);
+  const service = singleLine(body.service, 120);
+  const message = field(body.message, 6000);
+
+  if (!name || !email || !service || !message) {
+    return Response.json(
+      { error: "Name, email, service and message are required." },
+      { status: 400 }
+    );
+  }
+
+  if (!isEmail(email)) {
+    return Response.json({ error: "Please enter a valid email address." }, { status: 400 });
+  }
+
+  try {
+    const result = await sendEnquiry({
+      subject: `New website enquiry — ${name} — ${service}`,
+      replyTo: email,
+      text: formatEnquiry({ name, email, phone, service, details: message }),
+    });
+
+    console.log(`[enquiry] delivered via ${result.via} from ${ip}`);
+    return Response.json({ success: true });
+  } catch (error) {
+    // Real cause stays in the server log; the client only sees a safe message.
+    console.error("[enquiry] delivery failed:", error);
+    return Response.json(
+      {
+        error:
+          "We couldn't send your request right now. Please call us on +61 434 139 623 or WhatsApp us instead.",
+      },
+      { status: 502 }
     );
   }
 }

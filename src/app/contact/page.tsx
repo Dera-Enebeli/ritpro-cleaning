@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState } from "react";
+import { InlineTestimonial } from "@/components/ReviewCard";
+import { reviews } from "@/data/reviews";
+
+type Step = 0 | 1 | 2;
+
+const stepLabels = ["Service", "Details", "Send"];
 
 const serviceOptions = [
   "Regular residential cleaning",
@@ -16,34 +22,212 @@ const serviceOptions = [
   "Other",
 ];
 
+const WHATSAPP_NUMBER = "61434139623";
+
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    service: "",
-    message: "",
-  });
+  const [step, setStep] = useState<Step>(0);
+  const [service, setService] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  function canProceed(): boolean {
+    switch (step) {
+      case 0: return service !== "";
+      case 1: return name.trim() !== "" && email.trim() !== "";
+      default: return true;
+    }
+  }
+
+  function nextStep() {
+    if (step < 2 && canProceed()) {
+      setStep((step + 1) as Step);
+    }
+  }
+
+  function prevStep() {
+    if (step > 0) setStep((step - 1) as Step);
+  }
+
+  function handleSubmit() {
     setError("");
 
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    const text = [
+      `Hi Ritepro Cleaning,`,
+      ``,
+      `New enquiry from: ${name}`,
+      `Email: ${email}`,
+      `Phone: ${phone || "Not provided"}`,
+      `Service: ${service}`,
+      ``,
+      `Message:`,
+      `${message}`,
+    ].join("\n");
 
-    if (res.ok) {
-      setSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
-    } else {
-      const data = await res.json();
-      setError(data.error || "Something went wrong. Please try again.");
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
+
+    setSubmitted(true);
+  }
+
+  function stepContent() {
+    switch (step) {
+      case 0:
+        return (
+          <div>
+            <h2 className="text-xl font-bold text-black mb-6">What service do you need?</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {serviceOptions.map((opt) => (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => setService(opt)}
+                  className={`text-left p-5 rounded-lg border-2 transition-all ${
+                    service === opt
+                      ? "border-terracotta bg-terracotta/5"
+                      : "border-gray-100 bg-white hover:border-gray-300"
+                  }`}
+                >
+                  <span className={`text-sm font-bold ${service === opt ? "text-terracotta" : "text-black"}`}>
+                    {opt}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 1:
+        return (
+          <div>
+            <h2 className="text-xl font-bold text-black mb-2">Your details</h2>
+            <p className="text-sm text-gray-500 mb-6">We&apos;ll use these to get back to you.</p>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                  <input id="name" type="text" required value={name} onChange={(e) => setName(e.target.value)}
+                    className="w-full px-4 py-3.5 sm:py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate focus:border-transparent" placeholder="Your name" />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                  <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3.5 sm:py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate focus:border-transparent" placeholder="your@email.com" />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                <input id="phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
+                  className="w-full px-4 py-3.5 sm:py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate focus:border-transparent" placeholder="+61 434 139 623" />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div>
+            <h2 className="text-xl font-bold text-black mb-2">Your message</h2>
+            <p className="text-sm text-gray-500 mb-6">Tell us about your cleaning needs.</p>
+
+            <div className="mb-6">
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message *</label>
+              <textarea id="message" required rows={5} value={message} onChange={(e) => setMessage(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate focus:border-transparent resize-none"
+                placeholder="Tell us about your cleaning needs..." />
+            </div>
+
+            <div className="bg-gray-50 rounded-lg border border-gray-100 p-6 mb-6">
+              <h3 className="text-sm font-bold text-black mb-3">Summary</h3>
+              <table className="w-full text-sm">
+                <tbody className="divide-y divide-gray-200">
+                  <tr>
+                    <td className="py-2 text-gray-500">Service</td>
+                    <td className="py-2 text-right font-medium text-black">{service}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 text-gray-500">Name</td>
+                    <td className="py-2 text-right font-medium text-black">{name}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 text-gray-500">Email</td>
+                    <td className="py-2 text-right font-medium text-black">{email}</td>
+                  </tr>
+                  {phone && (
+                    <tr>
+                      <td className="py-2 text-gray-500">Phone</td>
+                      <td className="py-2 text-right font-medium text-black">{phone}</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
+
+            <InlineTestimonial review={reviews.find((r) => r.id === "r3")!} />
+
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="w-full bg-black text-white py-4 rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors"
+            >
+              Send via WhatsApp
+            </button>
+            <p className="text-xs text-gray-400 text-center mt-3">
+              We&apos;ll get back to you within 24 hours.
+            </p>
+          </div>
+        );
     }
+  }
+
+  if (submitted) {
+    return (
+      <div>
+        <section className="bg-black text-white py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl sm:text-5xl font-extrabold">Contact Us</h1>
+            <p className="mt-3 text-lg text-gray-300 max-w-xl">
+              Have a question or want to discuss your cleaning needs? Send us a
+              message and we will get back to you within 24 hours.
+            </p>
+          </div>
+        </section>
+        <section className="py-20">
+          <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
+                <svg className="w-8 h-8 text-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="mt-4 text-xl font-bold text-black">Thank You!</h3>
+              <p className="mt-2 text-gray-500 text-sm">
+                Your message has been sent. We will be in touch within 24 hours.
+              </p>
+              <button
+                onClick={() => {
+                  setSubmitted(false);
+                  setStep(0);
+                  setService("");
+                  setName("");
+                  setEmail("");
+                  setPhone("");
+                  setMessage("");
+                }}
+                className="mt-6 text-sm text-gray-600 font-semibold hover:text-black underline"
+              >
+                Send another message
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
   }
 
   return (
@@ -62,146 +246,64 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
-              {submitted ? (
-                <div className="bg-gray-50 rounded-lg p-8 text-center border border-gray-200">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                    <svg className="w-8 h-8 text-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h3 className="mt-4 text-xl font-bold text-black">
-                    Thank You!
-                  </h3>
-                  <p className="mt-2 text-gray-500 text-sm">
-                    Your message has been sent. We will be in touch within 24 hours.
-                  </p>
-                  <button
-                    onClick={() => setSubmitted(false)}
-                    className="mt-6 text-sm text-gray-600 font-semibold hover:text-black underline"
-                  >
-                    Send another message
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label
-                        htmlFor="name"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Full Name *
-                      </label>
-                      <input
-                        id="name"
-                        type="text"
-                        required
-                        value={formData.name}
-                        onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
-                        }
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate focus:border-transparent"
-                        placeholder="Your name"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Email Address *
-                      </label>
-                      <input
-                        id="email"
-                        type="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate focus:border-transparent"
-                        placeholder="your@email.com"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label
-                        htmlFor="phone"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        id="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) =>
-                          setFormData({ ...formData, phone: e.target.value })
-                        }
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate focus:border-transparent"
-                        placeholder="+61 434 139 623"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="service"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Service Needed *
-                      </label>
-                      <select
-                        id="service"
-                        required
-                        value={formData.service}
-                        onChange={(e) =>
-                          setFormData({ ...formData, service: e.target.value })
-                        }
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate focus:border-transparent bg-white"
-                      >
-                        <option value="">Select a service</option>
-                        {serviceOptions.map((opt) => (
-                          <option key={opt} value={opt}>
-                            {opt}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+              {/* Progress */}
+              <div className="flex items-center justify-center gap-0.5 sm:gap-1 mb-8 sm:mb-10">
+                {stepLabels.map((label, i) => (
+                  <div key={label} className="flex items-center">
+                    <div
+                      className={`flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-[10px] sm:text-xs font-bold transition-colors ${
+                        i <= step
+                          ? "bg-terracotta text-white"
+                          : "bg-gray-100 text-gray-400"
+                      }`}
                     >
-                      Message *
-                    </label>
-                    <textarea
-                      id="message"
-                      required
-                      rows={5}
-                      value={formData.message}
-                      onChange={(e) =>
-                        setFormData({ ...formData, message: e.target.value })
-                      }
-                      className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate focus:border-transparent resize-none"
-                      placeholder="Tell us about your cleaning needs..."
-                    />
+                      {i + 1}
+                    </div>
+                    {i < stepLabels.length - 1 && (
+                      <div
+                        className={`w-3 sm:w-8 lg:w-12 h-0.5 mx-0.5 sm:mx-1 transition-colors ${
+                          i < step ? "bg-terracotta" : "bg-gray-200"
+                        }`}
+                      />
+                    )}
                   </div>
+                ))}
+              </div>
 
-                  {error && (
-                    <p className="text-red-500 text-sm">{error}</p>
-                  )}
+              {/* Step label */}
+              <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider text-center mb-2">
+                Step {step + 1} of 3
+              </p>
+              <p className="text-center text-sm font-medium text-gray-700 mb-8">{stepLabels[step]}</p>
 
+              {/* Content */}
+              {stepContent()}
+
+              {/* Navigation */}
+              <div className="flex justify-between mt-8">
+                <button
+                  type="button"
+                  onClick={prevStep}
+                  className={`px-6 py-3 rounded-lg text-sm font-semibold transition-colors ${
+                    step === 0
+                      ? "invisible"
+                      : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  Back
+                </button>
+
+                {step < 2 && (
                   <button
-                    type="submit"
-                    className="bg-black text-white px-8 py-3 rounded text-sm font-bold hover:bg-gray-800 transition-colors"
+                    type="button"
+                    onClick={nextStep}
+                    disabled={!canProceed()}
+                    className="px-8 py-3 bg-black text-white rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors disabled:opacity-40"
                   >
-                    Send Message
+                    {step === 1 ? "Review Message" : "Next"}
                   </button>
-                </form>
-              )}
+                )}
+              </div>
             </div>
 
             <div>
@@ -233,7 +335,11 @@ export default function ContactPage() {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-4">
+                <a
+                  href={`https://wa.me/61434139623`}
+                  target="_blank"
+                  className="flex items-start gap-4 group"
+                >
                   <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center shrink-0">
                     <svg className="w-5 h-5 text-slate" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -241,12 +347,12 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-black">Location</h3>
-                    <p className="text-sm text-gray-500">
-                      Brisbane, QLD
+                    <h3 className="text-sm font-semibold text-black group-hover:text-slate transition-colors">WhatsApp</h3>
+                    <p className="text-sm text-gray-500 group-hover:text-gray-700 transition-colors">
+                      Chat with us on WhatsApp
                     </p>
                   </div>
-                </div>
+                </a>
               </div>
 
               <div className="mt-10 p-6 bg-gray-50 rounded-lg border border-gray-100">

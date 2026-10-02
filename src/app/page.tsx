@@ -1,16 +1,24 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { InlineTestimonial } from "@/components/ReviewCard";
+import { ReviewCarousel } from "@/components/ReviewCarousel";
+import { featuredReviews, reviews, reviewStats, googleRating } from "@/data/reviews";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const topServices = [
   { num: "01", title: "Regular Residential Cleaning", desc: "Weekly, fortnightly or monthly home cleans tailored to your routine. From $150." },
   { num: "02", title: "Commercial Cleaning", desc: "Professional commercial cleaning for offices and workspaces. From $600 per visit." },
-  { num: "03", title: "Airbnb Cleaning", desc: "Turnover cleans between guests. From $270 per clean." },
+  { num: "03", title: "Airbnb Cleaning", desc: "Turnover cleans between guests. From $220 per clean." },
   { num: "04", title: "End-of-Lease Cleaning", desc: "Legally required bond cleaning. $450–$700 per job." },
-  { num: "05", title: "NDIS Cleaning", desc: "Specialist cleaning for NDIS participants and support environments." },
-  { num: "06", title: "Carpet Cleaning", desc: "Deep steam cleaning for fresh, stain-free carpets. From $210." },
-  { num: "07", title: "Pressure Washing", desc: "Exterior cleaning for driveways, patios and pathways. From $700." },
-  { num: "08", title: "Window Cleaning", desc: "Streak-free interior and exterior window cleaning. From $400." },
-  { num: "09", title: "Builders' Cleans", desc: "Post-construction removal of dust, debris and residue." },
-  { num: "10", title: "Body Corporate Cleaning", desc: "Common area maintenance for apartment blocks and estates." },
+  { num: "05", title: "NDIS Cleaning", desc: "Specialist cleaning for NDIS participants and support environments. From $180." },
+  { num: "06", title: "Carpet Cleaning", desc: "Deep steam cleaning for fresh, stain-free carpets. From $170." },
+  { num: "07", title: "Pressure Washing", desc: "Exterior cleaning for driveways, patios and pathways. From $550." },
+  { num: "08", title: "Window Cleaning", desc: "Streak-free interior and exterior window cleaning. From $320." },
+  { num: "09", title: "Builders' Cleans", desc: "Post-construction removal of dust, debris and residue. From $900." },
+  { num: "10", title: "Body Corporate Cleaning", desc: "Common area maintenance for apartment blocks and estates. From $800 per month." },
 ];
 
 const trustPoints = [
@@ -53,11 +61,11 @@ const pricingCategories = [
   {
     title: "Add-On Services",
     rows: [
-      { label: "Carpet Cleaning (3 rooms)", price: "$210" },
-      { label: "Oven Cleaning", price: "$190" },
-      { label: "Window Cleaning (House)", price: "$400" },
-      { label: "Pressure Washing", price: "$700" },
-      { label: "Airbnb Turnover", price: "$270" },
+      { label: "Carpet Cleaning (3 rooms)", price: "$170" },
+      { label: "Oven Cleaning", price: "$150" },
+      { label: "Window Cleaning (House)", price: "$320" },
+      { label: "Pressure Washing", price: "$550" },
+      { label: "Airbnb Turnover", price: "$220" },
     ],
   },
 ];
@@ -78,6 +86,7 @@ export default function HomePage() {
           muted
           loop
           playsInline
+
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/videos/hero-cleaning.mp4#t=7" type="video/mp4" />
@@ -88,7 +97,7 @@ export default function HomePage() {
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 mb-6 bg-black/60 backdrop-blur-sm border border-white/10 rounded-full px-4 py-1.5 text-sm text-white/70">
                 <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse" />
-                Trusted across Brisbane since 2014
+                Trusted across Brisbane since 2019
               </div>
               <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[0.9] tracking-tight">
                 Clean
@@ -161,12 +170,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* WHY RITPRO */}
+      {/* WHY RITEPRO */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-black">
-              Why Ritpro?
+              Why Ritepro?
             </h2>
             <div className="w-12 h-0.5 bg-terracotta mx-auto mt-4" />
           </div>
@@ -189,6 +198,62 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* CUSTOMER REVIEWS */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl sm:text-4xl font-bold text-black">
+              What Our Customers Say
+            </h2>
+            <div className="w-12 h-0.5 bg-terracotta mx-auto mt-4" />
+            <p className="mt-4 text-gray-500 text-sm max-w-xl mx-auto">
+              Real reviews from real customers — about both our cleaners and how easy it is to book through Ritepro.
+            </p>
+          </div>
+
+          {/* Stats summary */}
+          <div className="flex items-center justify-center gap-8 sm:gap-12 mb-10">
+            <div className="text-center">
+              <p className="text-3xl font-black text-black">{reviewStats.average}</p>
+              <div className="flex justify-center gap-0.5 mt-1">
+                {Array.from({ length: 5 }, (_, i) => (
+                  <svg key={i} className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="text-xs text-gray-400 mt-0.5">50+ reviews</p>
+            </div>
+            <div className="hidden sm:block w-px h-12 bg-gray-200" />
+            <div className="text-center">
+              <p className="text-3xl font-black text-black">{googleRating.stars}</p>
+              <div className="flex justify-center gap-0.5 mt-1">
+                {Array.from({ length: 5 }, (_, i) => (
+                  <svg key={i} className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="text-xs text-gray-400 mt-0.5">Google</p>
+            </div>
+          </div>
+
+          <ReviewCarousel reviews={featuredReviews} />
+
+          <div className="text-center mt-8">
+            <Link
+              href="/reviews"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-black transition-colors"
+            >
+              Here are our reviews
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* PRICING */}
       <section className="py-20 bg-black text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -198,7 +263,7 @@ export default function HomePage() {
             </h2>
             <div className="w-12 h-0.5 bg-white/30 mx-auto mt-4" />
             <p className="mt-4 text-gray-400 text-sm max-w-xl mx-auto">
-              Fixed-price quotes — no surprises, no hidden fees.
+              Prices start from $150 — get your exact quote in 60 seconds.
             </p>
           </div>
 
@@ -248,6 +313,23 @@ export default function HomePage() {
             >
               Get Your Exact Quote
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FINAL TESTIMONIAL */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <InlineTestimonial review={reviews.find((r) => r.id === "r7")!} />
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-500 mt-2">
+            <div className="flex gap-0.5">
+              {Array.from({ length: 5 }, (_, i) => (
+                <svg key={i} className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+            <span className="text-gray-400">Rated {googleRating.stars} on Google</span>
           </div>
         </div>
       </section>

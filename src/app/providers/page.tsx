@@ -1,5 +1,20 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ReviewCard } from "@/components/ReviewCard";
+import { reviews } from "@/data/reviews";
+
+export const metadata: Metadata = {
+  title: "NDIS & Provider Cleaning Brisbane",
+  alternates: { canonical: "/providers" },
+  description:
+    "Compliant NDIS, CHSP, MyAgedCare, and community care cleaning services across Brisbane. Police-checked staff, incident reporting, and full documentation.",
+  openGraph: {
+    title: "NDIS Cleaning Brisbane | Provider Cleaning Services",
+    description:
+      "Compliant NDIS, CHSP, MyAgedCare, and community care cleaning services across Brisbane. Police-checked staff, incident reporting, and full documentation.",
+  },
+};
 
 const programs = [
   "NDIS — National Disability Insurance Scheme",
@@ -50,7 +65,7 @@ export default function ProvidersPage() {
       <section className="relative h-[40vh] min-h-[300px] flex items-center">
         <Image
           src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&q=80"
-          alt="Provider services"
+          alt="NDIS and provider cleaning services in Brisbane — Ritepro team supporting participants"
           fill
           className="object-cover"
           priority
@@ -185,6 +200,23 @@ export default function ProvidersPage() {
                 to adjust as participant needs change.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PROVIDER REVIEWS */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-black">
+              Trusted by Providers
+            </h2>
+            <div className="w-12 h-0.5 bg-terracotta mx-auto mt-4" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {reviews.filter((r) => r.tags.includes("ndis")).slice(0, 2).map((review) => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
           </div>
         </div>
       </section>

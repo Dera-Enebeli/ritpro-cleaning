@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "About Ritepro Cleaning",
+  alternates: { canonical: "/about" },
+  description:
+    "Learn about Ritepro Cleaning Services — Brisbane's trusted cleaning company. Founded to deliver reliable, professional cleaning for homes and businesses across Brisbane.",
+  openGraph: {
+    title: "About Ritepro Cleaning Brisbane | Our Story",
+    description:
+      "Learn about Ritepro Cleaning Services — Brisbane's trusted cleaning company. Founded to deliver reliable, professional cleaning for homes and businesses across Brisbane.",
+  },
+};
 
 const values = [
   {
@@ -25,7 +38,7 @@ export default function AboutPage() {
       <section className="relative h-[40vh] min-h-[300px] flex items-center">
         <Image
           src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&q=80"
-          alt="Ritpro cleaning team"
+          alt="Ritepro cleaning team servicing a Brisbane home"
           fill
           className="object-cover"
           priority
@@ -36,7 +49,7 @@ export default function AboutPage() {
             About Us
           </h1>
           <p className="mt-3 text-lg text-gray-200 max-w-xl">
-            We are Ritpro — a team built on reliability, quality, and a simple
+            We are Ritepro — a team built on reliability, quality, and a simple
             belief that everyone deserves a clean space.
           </p>
         </div>
@@ -51,7 +64,7 @@ export default function AboutPage() {
               </h2>
               <div className="w-12 h-0.5 bg-terracotta mt-4 mb-6" />
               <p className="text-gray-600 leading-relaxed">
-                Ritpro Cleaning Services was founded with a single mission: to
+                Ritepro Cleaning Services was founded with a single mission: to
                 deliver professional cleaning that people can actually rely on.
                 We started by serving local homes and quickly grew into
                 commercial contracts, government buildings, and specialist
@@ -66,7 +79,7 @@ export default function AboutPage() {
             <div className="relative h-[400px] rounded-lg overflow-hidden">
               <Image
                 src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80"
-                alt="Clean home"
+                alt="Professionally cleaned home in Brisbane by Ritepro Cleaning"
                 fill
                 className="object-cover"
               />

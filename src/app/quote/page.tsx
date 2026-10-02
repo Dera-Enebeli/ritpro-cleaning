@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { InlineTestimonial } from "@/components/ReviewCard";
+import { reviews } from "@/data/reviews";
 
 type Step = 0 | 1 | 2 | 3 | 4 | 5;
 
@@ -25,10 +27,10 @@ const bedroomOptions = [1, 2, 3, 4, 5, 6];
 const bathroomOptions = [1, 2, 3, 4];
 
 const extraOptions = [
-  { label: "Carpet Cleaning", price: 210 },
-  { label: "Oven Cleaning", price: 190 },
-  { label: "Window Cleaning", price: 400 },
-  { label: "Pressure Washing", price: 700 },
+  { label: "Carpet Cleaning", price: 170 },
+  { label: "Oven Cleaning", price: 150 },
+  { label: "Window Cleaning", price: 320 },
+  { label: "Pressure Washing", price: 550 },
 ];
 
 const frequencies: Frequency[] = ["One-off", "Weekly", "Fortnightly", "Monthly"];
@@ -145,27 +147,38 @@ export default function QuotePage() {
       `${notes || "None"}`,
     ].join("\n");
 
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        email,
-        phone,
-        service: service === "Commercial"
-          ? `Commercial (${commercialSize})`
-          : service,
-        message: details,
-      }),
-    });
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          service: service === "Commercial"
+            ? `Commercial (${commercialSize})`
+            : service,
+          message: details,
+        }),
+      });
 
-    setSending(false);
+      if (res.ok) {
+        setSubmitted(true);
+        return;
+      }
 
-    if (res.ok) {
-      setSubmitted(true);
-    } else {
-      const data = await res.json();
-      setError(data.error || "Something went wrong. Please try again.");
+      // The error body is best-effort — never let a bad parse mask the failure.
+      const data = await res.json().catch(() => null);
+      setError(
+        data?.error ??
+          "Something went wrong sending your request. Please try again, or call us on +61 434 139 623."
+      );
+    } catch {
+      setError(
+        "We couldn't reach our server. Check your connection and try again, or WhatsApp us on +61 434 139 623."
+      );
+    } finally {
+      setSending(false);
     }
   }
 
@@ -472,6 +485,8 @@ export default function QuotePage() {
 
             {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
 
+            <InlineTestimonial review={reviews.find((r) => r.id === "r9")!} />
+
             <button
               type="button"
               onClick={handleSubmit}
@@ -483,6 +498,17 @@ export default function QuotePage() {
             <p className="text-xs text-gray-400 text-center mt-3">
               We&apos;ll contact you as soon as possible, usually within 1–2 hours.
             </p>
+
+            {error && (
+              <a
+                href="https://wa.me/61434139623"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-center text-sm font-semibold text-black underline underline-offset-4 mt-4 hover:text-gray-600 transition-colors"
+              >
+                Send it via WhatsApp instead
+              </a>
+            )}
           </div>
         );
 
@@ -615,8 +641,14 @@ export default function QuotePage() {
                 <p className="text-black font-medium">riteprocleaningservices@gmail.com</p>
               </div>
               <div>
-                <span className="text-gray-400 font-semibold">Location</span>
-                <p className="text-black font-medium">Brisbane, QLD</p>
+                <span className="text-gray-400 font-semibold">WhatsApp</span>
+                <a
+                  href="https://wa.me/61434139623"
+                  target="_blank"
+                  className="text-black font-medium hover:text-slate transition-colors"
+                >
+                  Chat with us
+                </a>
               </div>
             </div>
           </div>

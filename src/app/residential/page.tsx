@@ -1,5 +1,20 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ReviewCard } from "@/components/ReviewCard";
+import { reviews } from "@/data/reviews";
+
+export const metadata: Metadata = {
+  title: "Residential Cleaning Brisbane",
+  alternates: { canonical: "/residential" },
+  description:
+    "Professional home cleaning services in Brisbane. Weekly, fortnightly, monthly, deep cleaning, end-of-lease, and more. From $150. Insured and satisfaction guaranteed.",
+  openGraph: {
+    title: "Residential Cleaning Brisbane | Home Cleaning Services",
+    description:
+      "Professional home cleaning services in Brisbane. Weekly, fortnightly, monthly, deep cleaning, end-of-lease, and more. From $150. Insured and satisfaction guaranteed.",
+  },
+};
 
 const residentialServices = [
   "Regular house cleaning (weekly, fortnightly, monthly)",
@@ -27,11 +42,11 @@ const eolPricing = [
 ];
 
 const addonPricing = [
-  { label: "Carpet Cleaning (3 rooms)", price: "$210" },
-  { label: "Oven Cleaning", price: "$190" },
-  { label: "Window Cleaning (House)", price: "$400" },
-  { label: "Pressure Washing", price: "$700" },
-  { label: "Airbnb Turnover", price: "$270" },
+  { label: "Carpet Cleaning (3 rooms)", price: "$170" },
+  { label: "Oven Cleaning", price: "$150" },
+  { label: "Window Cleaning (House)", price: "$320" },
+  { label: "Pressure Washing", price: "$550" },
+  { label: "Airbnb Turnover", price: "$220" },
 ];
 
 const recurringCallout = [
@@ -46,7 +61,7 @@ export default function ResidentialPage() {
       <section className="relative h-[40vh] min-h-[300px] flex items-center">
         <Image
           src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80"
-          alt="Residential cleaning"
+          alt="Residential cleaning service in Brisbane — Ritepro cleaner tidying a living room"
           fill
           className="object-cover"
           priority
@@ -71,7 +86,7 @@ export default function ResidentialPage() {
               <p className="text-xs text-gray-400">End of Tenancy</p>
             </div>
             <div>
-              <p className="text-white font-bold text-lg">$270</p>
+              <p className="text-white font-bold text-lg">$220</p>
               <p className="text-xs text-gray-400">Airbnb Clean</p>
             </div>
             <div>
@@ -117,7 +132,7 @@ export default function ResidentialPage() {
             </h2>
             <div className="w-12 h-0.5 bg-terracotta mx-auto mt-4" />
             <p className="mt-4 text-gray-500 text-sm max-w-xl mx-auto">
-              Fixed-price quotes — no surprises, no hidden fees.
+              Prices start from $150 — get your exact quote in 60 seconds.
             </p>
           </div>
 
@@ -201,6 +216,23 @@ export default function ResidentialPage() {
             <p className="text-xs text-gray-400 mt-3">
               Starting from 1-bedroom standard clean. Pricing adjusts for larger homes.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* RESIDENTIAL REVIEWS */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-black">
+              Real Results from Real Homes
+            </h2>
+            <div className="w-12 h-0.5 bg-terracotta mx-auto mt-4" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {reviews.filter((r) => r.tags.includes("residential")).slice(0, 2).map((review) => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
           </div>
         </div>
       </section>

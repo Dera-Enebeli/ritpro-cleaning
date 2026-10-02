@@ -1,5 +1,20 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ReviewCard } from "@/components/ReviewCard";
+import { reviews } from "@/data/reviews";
+
+export const metadata: Metadata = {
+  title: "Commercial Cleaning Brisbane",
+  alternates: { canonical: "/commercial" },
+  description:
+    "Professional commercial and office cleaning in Brisbane. Reliable, compliant, and fully insured. From $600 per visit. Get a free quote today.",
+  openGraph: {
+    title: "Commercial Cleaning Brisbane | Office Cleaning Services",
+    description:
+      "Professional commercial and office cleaning in Brisbane. Reliable, compliant, and fully insured. From $600 per visit.",
+  },
+};
 
 const industries = [
   "Offices & co-working spaces",
@@ -52,7 +67,7 @@ export default function CommercialPage() {
       <section className="relative h-[40vh] min-h-[300px] flex items-center">
         <Image
           src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80"
-          alt="Commercial cleaning"
+          alt="Commercial office cleaning in Brisbane — Ritepro cleaner servicing a workspace"
           fill
           className="object-cover"
           priority
@@ -211,6 +226,23 @@ export default function CommercialPage() {
                 <h3 className="text-sm font-bold text-black">{faq.q}</h3>
                 <p className="mt-2 text-sm text-gray-500">{faq.a}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* COMMERCIAL REVIEWS */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-black">
+              Trusted by Brisbane Businesses
+            </h2>
+            <div className="w-12 h-0.5 bg-terracotta mx-auto mt-4" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {reviews.filter((r) => r.tags.includes("commercial")).slice(0, 2).map((review) => (
+              <ReviewCard key={review.id} review={review} />
             ))}
           </div>
         </div>

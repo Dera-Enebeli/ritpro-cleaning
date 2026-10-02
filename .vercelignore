@@ -1,0 +1,16 @@
+# Secrets must never be uploaded to Vercel.
+# vercel deploy only respects .vercelignore, NOT .gitignore,
+# so without this the local .env.local would be uploaded.
+.env
+.env.*
+
+# Local build output (Vercel rebuilds from source)
+.next
+out
+build
+
+# Version control
+.git
+
+# Scratch/demo files that are not part of the app
+design-demos
