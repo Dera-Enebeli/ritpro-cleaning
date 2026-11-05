@@ -115,7 +115,7 @@ export default function HomePage() {
                   href="/quote"
                   className="inline-flex items-center gap-2 bg-white text-black px-8 py-3.5 rounded text-sm font-bold hover:bg-gray-100 transition-colors"
                 >
-                  Get a Free Quote
+                  Free instant quote
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                 </Link>
                 <Link
@@ -222,7 +222,7 @@ export default function HomePage() {
                   </svg>
                 ))}
               </div>
-              <p className="text-xs text-gray-400 mt-0.5">50+ reviews</p>
+              <p className="text-xs text-gray-400 mt-0.5">Verified reviews</p>
             </div>
             <div className="hidden sm:block w-px h-12 bg-gray-200" />
             <div className="text-center">
@@ -288,30 +288,12 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Recurring callout */}
-          <div className="mt-10 bg-white/5 border border-gray-800 rounded-xl p-6 text-center">
-            <h3 className="text-sm font-bold text-gray-300 uppercase tracking-wider mb-3">
-              Save with Regular Cleaning
-            </h3>
-            <div className="flex justify-center gap-6 flex-wrap">
-              {recurringCallout.map((r) => (
-                <div key={r.freq} className="text-center">
-                  <p className="text-lg font-bold text-white">{r.price}</p>
-                  <p className="text-xs text-gray-400">{r.freq}</p>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-gray-500 mt-3">
-              Starting from 1-bedroom standard clean. Pricing adjusts for larger homes.
-            </p>
-          </div>
-
           <div className="text-center mt-8">
             <Link
               href="/quote"
               className="inline-block bg-white text-black px-8 py-3 rounded text-sm font-bold hover:bg-gray-100 transition-colors"
             >
-              Get Your Exact Quote
+              Free instant quote
             </Link>
           </div>
         </div>
@@ -347,7 +329,7 @@ export default function HomePage() {
             href="/quote"
             className="mt-8 inline-block bg-black text-white px-10 py-4 rounded text-sm font-bold hover:bg-gray-800 transition-colors"
           >
-            Get a Free Quote
+            Free instant quote
           </Link>
         </div>
       </section>

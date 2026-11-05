@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Get an Instant Quote",
+  title: "Free instant quote",
   alternates: { canonical: "/quote" },
   description:
     "Get an instant fixed-price cleaning quote in 60 seconds. No waiting, no obligation. Residential, commercial, end-of-lease, and more. Brisbane-wide.",

@@ -39,7 +39,7 @@ export default function Header() {
             />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-5">
+          <nav className="hidden lg:flex items-center gap-5">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
@@ -79,42 +79,71 @@ export default function Header() {
               href="/quote"
               className="bg-black text-white px-5 py-2 rounded text-sm font-semibold hover:bg-gray-800 transition-colors"
             >
-              Get a Quote
+              Free instant quote
             </Link>
           </nav>
 
-          <button
-            className="md:hidden p-2"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <div className="flex items-center gap-2 lg:hidden">
+            <Link
+              href="/quote"
+              className="inline-flex items-center gap-1.5 whitespace-nowrap rounded bg-black px-3.5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-gray-800 sm:px-4 sm:text-sm"
             >
-              {mobileOpen ? (
+              <span className="sm:hidden">Free quote</span>
+              <span className="hidden sm:inline">Free instant quote</span>
+              <svg
+                className="h-3.5 w-3.5 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
+              </svg>
+            </Link>
+
+            <button
+              className="-mr-2 p-2"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {mobileOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
 
         {mobileOpen && (
-          <nav className="md:hidden pb-4 border-t border-gray-100 pt-4">
+          <nav
+            id="mobile-nav"
+            className="lg:hidden pb-4 border-t border-gray-100 pt-4"
+          >
             <div className="flex flex-col gap-7">
               {navLinks.map((link) => (
                 <Link
@@ -154,13 +183,6 @@ export default function Header() {
                 </svg>
                 Instagram
               </a>
-              <Link
-                href="/quote"
-                className="bg-black text-white px-5 py-2 rounded text-sm font-semibold text-center hover:bg-gray-800 transition-colors"
-                onClick={() => setMobileOpen(false)}
-              >
-                Get a Quote
-              </Link>
             </div>
           </nav>
         )}

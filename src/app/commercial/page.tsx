@@ -72,21 +72,21 @@ export default function CommercialPage() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-[#0a0a0a]/65 to-[#111827]/90"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
             Commercial Cleaning
           </h1>
-          <p className="mt-3 text-lg text-gray-200 max-w-xl">
+          <p className="mt-3 text-lg text-[#E2E8F0] max-w-xl leading-relaxed">
             Reliable cleaning and facility services for Brisbane businesses.
             Compliant, documented, and managed by a real office team.
           </p>
           <div className="mt-6">
-            <Link
+          <Link
               href="/quote"
-              className="inline-block bg-white text-black px-8 py-3 rounded text-sm font-bold hover:bg-gray-100 transition-colors"
+              className="inline-block bg-[#C86A4B] hover:bg-[#B86C55] text-white rounded-md px-8 py-3.5 text-sm font-extrabold shadow-lg shadow-[#C86A4B]/20 transition-all"
             >
-              Get a Quote
+              Free instant quote
             </Link>
           </div>
         </div>
@@ -95,29 +95,27 @@ export default function CommercialPage() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-black">
-              Our Services for You
-            </h2>
-            <div className="w-12 h-0.5 bg-terracotta mx-auto mt-4" />
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#111827] tracking-tight">Our Services for You</h2>
+            <div className="w-12 h-0.5 bg-[#C86A4B] mx-auto mt-4 rounded-full"></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
-              <h3 className="text-lg font-bold text-black">Commercial Cleaning</h3>
-              <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+            <div className="p-8 rounded-lg border border-[#E2E8F0] hover:shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow bg-white/60">
+              <h3 className="text-lg font-extrabold text-[#111827]">Commercial Cleaning</h3>
+              <p className="mt-2 text-sm text-[#4B5563] leading-relaxed">
                 Office and facility cleaning that stays consistent. Checklists,
                 compliance documentation, and quality reporting included.
               </p>
             </div>
-            <div className="p-8 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
-              <h3 className="text-lg font-bold text-black">Strata & Body Corporate</h3>
-              <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+            <div className="p-8 rounded-lg border border-[#E2E8F0] hover:shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow bg-white/60">
+              <h3 className="text-lg font-extrabold text-[#111827]">Strata & Body Corporate</h3>
+              <p className="mt-2 text-sm text-[#4B5563] leading-relaxed">
                 Common area maintenance for apartment blocks, estates, and
                 community titles. Reliable schedules and clear reporting.
               </p>
             </div>
-            <div className="p-8 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
-              <h3 className="text-lg font-bold text-black">Specialist & Industrial</h3>
-              <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+            <div className="p-8 rounded-lg border border-[#E2E8F0] hover:shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow bg-white/60">
+              <h3 className="text-lg font-extrabold text-[#111827]">Specialist & Industrial</h3>
+              <p className="mt-2 text-sm text-[#4B5563] leading-relaxed">
                 Warehouse, school, and post-construction cleaning. Complex
                 environments handled with the right equipment and protocols.
               </p>
@@ -260,7 +258,7 @@ export default function CommercialPage() {
             href="/quote"
             className="mt-6 inline-block bg-black text-white px-8 py-3 rounded text-sm font-bold hover:bg-gray-800 transition-colors"
           >
-            Get a Quote
+            Free instant quote
           </Link>
         </div>
       </section>

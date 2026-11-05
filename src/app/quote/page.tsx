@@ -5,9 +5,8 @@ import { useState } from "react";
 import { InlineTestimonial } from "@/components/ReviewCard";
 import { reviews } from "@/data/reviews";
 
-type Step = 0 | 1 | 2 | 3 | 4 | 5;
-
-const stepLabels = ["Service", "Property", "Extras", "Schedule", "Details", "Quote"];
+type Step = 0 | 1 | 2;
+const stepLabels = ["Service & Property", "Schedule & Extras", "Details & Quote"];
 
 type ServiceType = "Standard Clean" | "Deep Clean" | "End of Lease" | "Commercial" | "Other";
 type PropertyType = "House" | "Apartment" | "Townhouse";
@@ -22,24 +21,16 @@ const serviceOptions: { value: ServiceType; label: string; desc: string }[] = [
 ];
 
 const propertyTypes: PropertyType[] = ["House", "Apartment", "Townhouse"];
-
 const bedroomOptions = [1, 2, 3, 4, 5, 6];
 const bathroomOptions = [1, 2, 3, 4];
-
 const extraOptions = [
   { label: "Carpet Cleaning", price: 170 },
   { label: "Oven Cleaning", price: 150 },
   { label: "Window Cleaning", price: 320 },
   { label: "Pressure Washing", price: 550 },
 ];
-
 const frequencies: Frequency[] = ["One-off", "Weekly", "Fortnightly", "Monthly"];
-
-const recurringPricing = {
-  Weekly: 149,
-  Fortnightly: 159,
-  Monthly: 169,
-};
+const recurringPricing = { Weekly: 149, Fortnightly: 159, Monthly: 169 };
 
 function getBasePrice(service: ServiceType, bedrooms: number, bathrooms: number): { price: string; isRange: boolean } | null {
   switch (service) {
@@ -50,25 +41,18 @@ function getBasePrice(service: ServiceType, bedrooms: number, bathrooms: number)
       const base = 150 + (bedrooms - 1) * 60;
       return { price: `$${base} – $${base + 40}`, isRange: true };
     }
-    case "Deep Clean":
-      return { price: "$280 – $550", isRange: true };
+    case "Deep Clean": return { price: "$280 – $550", isRange: true };
     case "End of Lease": {
       if (bedrooms === 2) return { price: "$450", isRange: false };
       if (bedrooms === 3) return { price: "$700", isRange: false };
       return { price: "$450 – $700", isRange: true };
     }
-    default:
-      return null;
+    default: return null;
   }
 }
-
 function getExtrasTotal(extras: string[]): number {
-  return extras.reduce((total, label) => {
-    const opt = extraOptions.find((e) => e.label === label);
-    return total + (opt?.price ?? 0);
-  }, 0);
+  return extras.reduce((t, label) => t + (extraOptions.find((e) => e.label === label)?.price ?? 0), 0);
 }
-
 function getSizeLabel(bedrooms: number): string {
   if (bedrooms <= 1) return "Small";
   if (bedrooms <= 3) return "Medium";
@@ -94,34 +78,17 @@ export default function QuotePage() {
   const [sending, setSending] = useState(false);
 
   function canProceed(): boolean {
-    switch (step) {
-      case 0: return service !== "";
-      case 1: return propertyType !== "";
-      case 2: return true;
-      case 3: return true;
-      case 4: return name.trim() !== "" && email.trim() !== "" && phone.trim() !== "";
-      default: return true;
-    }
+    if (step === 0) return service !== "" && propertyType !== "";
+    if (step === 1) return true;
+    return name.trim() !== "" && email.trim() !== "" && phone.trim() !== "";
   }
 
   function nextStep() {
-    if (step < 5 && canProceed()) {
-      if (step === 2 && service === "Commercial") {
-        setStep(5 as Step);
-        return;
-      }
-      setStep((step + 1) as Step);
-    }
+    if (step < 2 && canProceed()) setStep((step + 1) as Step);
   }
-
-  function prevStep() {
-    if (step > 0) setStep((step - 1) as Step);
-  }
-
+  function prevStep() { if (step > 0) setStep((step - 1) as Step); }
   function toggleExtra(label: string) {
-    setExtras((prev) =>
-      prev.includes(label) ? prev.filter((e) => e !== label) : [...prev, label]
-    );
+    setExtras((prev) => prev.includes(label) ? prev.filter((e) => e !== label) : [...prev, label]);
   }
 
   const basePricing = service ? getBasePrice(service as ServiceType, bedrooms, bathrooms) : null;
@@ -130,143 +97,80 @@ export default function QuotePage() {
   const commercialSize = getSizeLabel(bedrooms);
 
   async function handleSubmit() {
-    setSending(true);
-    setError("");
-
+    setSending(true); setError("");
     const details = [
       `Property: ${propertyType || "N/A"}`,
-      `Bedrooms: ${bedrooms}`,
-      `Bathrooms: ${bathrooms}`,
-      `Extras: ${extras.join(", ") || "None"}`,
-      `Frequency: ${frequency}`,
-      `Postcode: ${postcode || "N/A"}`,
-      `When needed: ${whenNeeded || "N/A"}`,
+      `Bedrooms: ${bedrooms}`, `Bathrooms: ${bathrooms}`,
+      `Extras: ${extras.join(", ") || "None"}`, `Frequency: ${frequency}`,
+      `Postcode: ${postcode || "N/A"}`, `When needed: ${whenNeeded || "N/A"}`,
       `Estimated price: ${basePricing?.price ?? "N/A"}${extrasTotal > 0 ? ` + $${extrasTotal} extras` : ""}`,
-      ``,
-      `Notes:`,
-      `${notes || "None"}`,
+      `Notes: ${notes || "None"}`,
     ].join("\n");
-
     try {
       const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          service: service === "Commercial"
-            ? `Commercial (${commercialSize})`
-            : service,
-          message: details,
-        }),
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, service: service === "Commercial" ? `Commercial (${commercialSize})` : service, message: details }),
       });
-
-      if (res.ok) {
-        setSubmitted(true);
-        return;
-      }
-
-      // The error body is best-effort — never let a bad parse mask the failure.
+      if (res.ok) { setSubmitted(true); return; }
       const data = await res.json().catch(() => null);
-      setError(
-        data?.error ??
-          "Something went wrong sending your request. Please try again, or call us on +61 434 139 623."
-      );
+      setError(data?.error ?? "Something went wrong. Please try again, or call us on +61 434 139 623.");
     } catch {
-      setError(
-        "We couldn't reach our server. Check your connection and try again, or WhatsApp us on +61 434 139 623."
-      );
-    } finally {
-      setSending(false);
-    }
+      setError("We couldn't reach our server. Check your connection and try again, or WhatsApp us on +61 434 139 623.");
+    } finally { setSending(false); }
   }
 
   const stepContent = () => {
     switch (step) {
       case 0:
         return (
-          <div>
-            <h2 className="text-xl font-bold text-black mb-6">What do you need cleaned?</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {serviceOptions.map((opt) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => { setService(opt.value); }}
-                  className={`text-left p-5 rounded-lg border-2 transition-all ${
-                    service === opt.value
-                      ? "border-terracotta bg-terracotta/5"
-                      : "border-gray-100 bg-white hover:border-gray-300"
-                  }`}
-                >
-                  <span className={`text-sm font-bold ${service === opt.value ? "text-terracotta" : "text-black"}`}>
-                    {opt.label}
-                  </span>
-                  <p className="text-xs text-gray-500 mt-1">{opt.desc}</p>
-                </button>
-              ))}
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-xl font-bold text-black mb-2">Service & Property</h2>
+              <p className="text-sm text-gray-500">Select what you need cleaned and tell us about your property.</p>
             </div>
-          </div>
-        );
-
-      case 1:
-        return (
-          <div>
-            <h2 className="text-xl font-bold text-black mb-6">Tell us about your property</h2>
-
-            <label className="block text-sm font-medium text-gray-700 mb-2">Property type</label>
-            <div className="flex gap-2 mb-6">
-              {propertyTypes.map((pt) => (
-                <button
-                  key={pt}
-                  type="button"
-                  onClick={() => setPropertyType(pt)}
-                  className={`flex-1 sm:flex-none px-5 py-3 sm:py-2.5 rounded-lg text-sm font-semibold border-2 transition-all ${
-                    propertyType === pt
-                      ? "border-terracotta bg-terracotta/5 text-terracotta"
-                      : "border-gray-100 bg-white text-gray-600 hover:border-gray-300"
-                  }`}
-                >
-                  {pt}
-                </button>
-              ))}
+            <div>
+              <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-3">What service do you need?</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {serviceOptions.map((opt) => (
+                  <button key={opt.value} type="button" onClick={() => setService(opt.value)}
+                    className={`text-left p-5 rounded-xl border-2 transition-all ${service === opt.value ? "border-terracotta bg-terracotta/5" : "border-gray-100 bg-white hover:border-gray-300"}`}>
+                    <span className={`text-sm font-bold ${service === opt.value ? "text-terracotta" : "text-black"}`}>{opt.label}</span>
+                    <p className="text-xs text-gray-500 mt-1">{opt.desc}</p>
+                  </button>
+                ))}
+              </div>
             </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Bedrooms</label>
+                <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-3">Property type</label>
+                <div className="flex gap-2">
+                  {propertyTypes.map((pt) => (
+                    <button key={pt} type="button" onClick={() => setPropertyType(pt)}
+                      className={`flex-1 px-4 py-3 rounded-xl text-sm font-semibold border-2 transition-all ${propertyType === pt ? "border-terracotta bg-terracotta/5 text-terracotta" : "border-gray-100 bg-white text-gray-600 hover:border-gray-300"}`}>
+                      {pt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-3">Bedrooms</label>
                 <div className="flex flex-wrap gap-2">
                   {bedroomOptions.map((n) => (
-                    <button
-                      key={n}
-                      type="button"
-                      onClick={() => setBedrooms(n)}
-                      className={`w-11 h-11 sm:w-10 sm:h-10 rounded-lg text-sm font-semibold border-2 transition-all ${
-                        bedrooms === n
-                          ? "border-terracotta bg-terracotta/5 text-terracotta"
-                          : "border-gray-100 bg-white text-gray-600 hover:border-gray-300"
-                      }`}
-                    >
+                    <button key={n} type="button" onClick={() => setBedrooms(n)}
+                      className={`w-11 h-11 rounded-xl text-sm font-bold border-2 transition-all ${bedrooms === n ? "border-terracotta bg-terracotta/5 text-terracotta" : "border-gray-100 bg-white text-gray-600 hover:border-gray-300"}`}>
                       {n}
                     </button>
                   ))}
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Bathrooms</label>
+                <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-3">Bathrooms</label>
                 <div className="flex flex-wrap gap-2">
                   {bathroomOptions.map((n) => (
-                    <button
-                      key={n}
-                      type="button"
-                      onClick={() => setBathrooms(n)}
-                      className={`w-11 h-11 sm:w-10 sm:h-10 rounded-lg text-sm font-semibold border-2 transition-all ${
-                        bathrooms === n
-                          ? "border-terracotta bg-terracotta/5 text-terracotta"
-                          : "border-gray-100 bg-white text-gray-600 hover:border-gray-300"
-                      }`}
-                    >
+                    <button key={n} type="button" onClick={() => setBathrooms(n)}
+                      className={`w-11 h-11 rounded-xl text-sm font-bold border-2 transition-all ${bathrooms === n ? "border-terracotta bg-terracotta/5 text-terracotta" : "border-gray-100 bg-white text-gray-600 hover:border-gray-300"}`}>
                       {n}
                     </button>
                   ))}
@@ -275,245 +179,119 @@ export default function QuotePage() {
             </div>
           </div>
         );
-
-      case 2:
-        if (service === "Commercial") {
-          return (
+      case 1:
+        return (
+          <div className="space-y-8">
             <div>
-              <h2 className="text-xl font-bold text-black mb-6">Office size</h2>
-              <p className="text-sm text-gray-500 mb-6">
-                We&apos;ll use the bedrooms you selected ({bedrooms}) as a rough guide.
-                We&apos;ll confirm exact pricing during quoting.
-              </p>
-              <div className="p-6 bg-gray-50 rounded-lg border border-gray-100">
+              <h2 className="text-xl font-bold text-black mb-2">Schedule & Extras</h2>
+              <p className="text-sm text-gray-500">Choose your frequency and any add-on services.</p>
+            </div>
+            <div>
+              <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-3">How often?</label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {frequencies.map((freq) => (
+                  <button key={freq} type="button" onClick={() => setFrequency(freq)}
+                    className={`p-4 rounded-xl border-2 text-center transition-all ${frequency === freq ? "border-terracotta bg-terracotta/5" : "border-gray-100 bg-white hover:border-gray-300"}`}>
+                    <span className={`text-sm font-bold ${frequency === freq ? "text-terracotta" : "text-black"}`}>{freq}</span>
+                    {freq !== "One-off" && <p className="text-xs text-gray-400 mt-1">from ${recurringPricing[freq]}/clean</p>}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {service !== "Commercial" && (
+              <div>
+                <label className="block text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-3">Optional extras</label>
+                <div className="space-y-2">
+                  {extraOptions.map((opt) => (
+                    <button key={opt.label} type="button" onClick={() => toggleExtra(opt.label)}
+                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${extras.includes(opt.label) ? "border-terracotta bg-terracotta/5" : "border-gray-100 bg-white hover:border-gray-300"}`}>
+                      <span className="text-sm font-medium text-black">{opt.label}</span>
+                      <span className={`text-sm font-bold ${extras.includes(opt.label) ? "text-terracotta" : "text-gray-400"}`}>+${opt.price}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            {service === "Commercial" && (
+              <div className="p-6 bg-gray-50 rounded-xl border border-gray-100">
                 <h3 className="text-sm font-bold text-black">Commercial pricing estimate</h3>
-                <div className="mt-3 space-y-2 text-sm text-gray-600">
+                <div className="mt-3 space-y-1 text-sm text-gray-600">
                   <p><strong>Small</strong> (&lt;5,000 sq ft): $600/visit</p>
                   <p><strong>Medium</strong> (5,000–15,000 sq ft): $1,000/visit</p>
                   <p><strong>Large</strong> (15,000–30,000 sq ft): $2,000/visit</p>
                 </div>
-                <p className="mt-3 text-xs text-gray-400">
-                  Estimated range based on {commercialSize} office size.
-                </p>
+                <p className="mt-3 text-xs text-gray-400">Estimated size based on {commercialSize} office size.</p>
               </div>
-            </div>
-          );
-        }
-
-        return (
-          <div>
-            <h2 className="text-xl font-bold text-black mb-2">Any extras?</h2>
-            <p className="text-sm text-gray-500 mb-6">Optional — select any additional services you need.</p>
-            <div className="space-y-2">
-              {extraOptions.map((opt) => (
-                <button
-                  key={opt.label}
-                  type="button"
-                  onClick={() => toggleExtra(opt.label)}
-                  className={`w-full flex items-center justify-between p-4 rounded-lg border-2 transition-all ${
-                    extras.includes(opt.label)
-                      ? "border-terracotta bg-terracotta/5"
-                      : "border-gray-100 bg-white hover:border-gray-300"
-                  }`}
-                >
-                  <span className="text-sm font-medium text-black">{opt.label}</span>
-                  <span className={`text-sm font-bold ${extras.includes(opt.label) ? "text-terracotta" : "text-gray-400"}`}>
-                    +${opt.price}
-                  </span>
-                </button>
-              ))}
-            </div>
+            )}
           </div>
         );
-
-      case 3:
+      case 2:
         return (
-          <div>
-            <h2 className="text-xl font-bold text-black mb-2">How often?</h2>
-            <p className="text-sm text-gray-500 mb-6">Choose your cleaning schedule.</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {frequencies.map((freq) => (
-                <button
-                  key={freq}
-                  type="button"
-                  onClick={() => setFrequency(freq)}
-                  className={`p-4 rounded-lg border-2 text-center transition-all ${
-                    frequency === freq
-                      ? "border-terracotta bg-terracotta/5"
-                      : "border-gray-100 bg-white hover:border-gray-300"
-                  }`}
-                >
-                  <span className={`text-sm font-bold ${frequency === freq ? "text-terracotta" : "text-black"}`}>
-                    {freq}
-                  </span>
-                  {freq !== "One-off" && (
-                    <p className="text-xs text-gray-400 mt-1">
-                      from ${recurringPricing[freq]}/clean
-                    </p>
-                  )}
-                </button>
-              ))}
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-xl font-bold text-black mb-2">Your details & quote</h2>
+              <p className="text-sm text-gray-500">Confirm your info and see the estimated price.</p>
             </div>
-          </div>
-        );
-
-      case 4:
-        return (
-          <div>
-            <h2 className="text-xl font-bold text-black mb-2">Your details</h2>
-            <p className="text-sm text-gray-500 mb-6">We&apos;ll send your quote to this email and phone.</p>
-
-            <div className={`${submitted ? "" : "space-y-4"}`}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
-                  <input id="name" type="text" required value={name} onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3.5 sm:py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate" placeholder="Your name" />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                  <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3.5 sm:py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate" placeholder="your@email.com" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone *</label>
-                  <input id="phone" type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-4 py-3.5 sm:py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate" placeholder="+61 4XX XXX XXX" />
-                </div>
-                <div>
-                  <label htmlFor="postcode" className="block text-sm font-medium text-gray-700 mb-1">Postcode</label>
-                  <input id="postcode" type="text" value={postcode} onChange={(e) => setPostcode(e.target.value)}
-                    className="w-full px-4 py-3.5 sm:py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate" placeholder="4000" />
-                </div>
-              </div>
-
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="when" className="block text-sm font-medium text-gray-700 mb-1">When do you need it?</label>
-                <input id="when" type="text" value={whenNeeded} onChange={(e) => setWhenNeeded(e.target.value)}
-                  className="w-full px-4 py-3.5 sm:py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate" placeholder="ASAP, next week, specific date..." />
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                <input id="name" type="text" required value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-terracotta/30" placeholder="Your name" />
               </div>
-
               <div>
-                <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">Anything else?</label>
-                <textarea id="notes" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)}
-                  className="w-full px-4 py-3.5 sm:py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate resize-none" placeholder="Access instructions, specific requests, pet info..." />
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-terracotta/30" placeholder="your@email.com" />
               </div>
             </div>
-          </div>
-        );
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone *</label>
+                <input id="phone" type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-terracotta/30" placeholder="+61 4XX XXX XXX" />
+              </div>
+              <div>
+                <label htmlFor="postcode" className="block text-sm font-medium text-gray-700 mb-1">Postcode</label>
+                <input id="postcode" type="text" value={postcode} onChange={(e) => setPostcode(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-terracotta/30" placeholder="4000" />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="when" className="block text-sm font-medium text-gray-700 mb-1">When do you need it?</label>
+              <input id="when" type="text" value={whenNeeded} onChange={(e) => setWhenNeeded(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-terracotta/30" placeholder="ASAP, next week, specific date..." />
+            </div>
+            <div>
+              <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+              <textarea id="notes" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-terracotta/30 resize-none" placeholder="Access instructions, pet info, specific requests..." />
+            </div>
 
-      case 5:
-        return (
-          <div>
-            <h2 className="text-xl font-bold text-black mb-6">Your quote</h2>
-
-            <div className="bg-gray-50 rounded-lg border border-gray-100 p-6 mb-6">
+            <div className="bg-gray-50 rounded-xl border border-gray-100 p-6">
+              <h3 className="text-sm font-bold text-black mb-3">Estimated Quote</h3>
               <table className="w-full text-sm">
                 <tbody className="divide-y divide-gray-200">
-                  <tr>
-                    <td className="py-2 text-gray-500">Service</td>
-                    <td className="py-2 text-right font-medium text-black">{service}</td>
-                  </tr>
-                  {service !== "Commercial" && service !== "Other" && (
+                  <tr><td className="py-2 text-gray-500">Service</td><td className="py-2 text-right font-medium text-black">{service}</td></tr>
+                  {service !== "Commercial" && service !== "Other" && basePricing && (
                     <>
-                      <tr>
-                        <td className="py-2 text-gray-500">Property</td>
-                        <td className="py-2 text-right font-medium text-black">{propertyType} &middot; {bedrooms}BR / {bathrooms}Bath</td>
-                      </tr>
-                      {basePricing && (
-                        <tr>
-                          <td className="py-2 text-gray-500">Base price</td>
-                          <td className="py-2 text-right font-bold text-black">{basePricing.price}</td>
-                        </tr>
-                      )}
+                      <tr><td className="py-2 text-gray-500">Property</td><td className="py-2 text-right font-medium text-black">{propertyType} · {bedrooms}BR / {bathrooms}Bath</td></tr>
+                      <tr><td className="py-2 text-gray-500">Base price</td><td className="py-2 text-right font-bold text-black">{basePricing.price}</td></tr>
                     </>
                   )}
-                  {service === "Commercial" && (
-                    <tr>
-                      <td className="py-2 text-gray-500">Estimated size</td>
-                      <td className="py-2 text-right font-medium text-black">{commercialSize}</td>
-                    </tr>
-                  )}
-                  {extras.length > 0 && (
-                    <tr>
-                      <td className="py-2 text-gray-500">Extras ({extras.length})</td>
-                      <td className="py-2 text-right font-medium text-black">+${extrasTotal}</td>
-                    </tr>
-                  )}
-                  <tr>
-                    <td className="py-2 text-gray-500">Schedule</td>
-                    <td className="py-2 text-right font-medium text-black">{frequency}</td>
-                  </tr>
+                  {service === "Commercial" && <tr><td className="py-2 text-gray-500">Size</td><td className="py-2 text-right font-medium text-black">{commercialSize}</td></tr>}
+                  {extras.length > 0 && <tr><td className="py-2 text-gray-500">Extras ({extras.length})</td><td className="py-2 text-right font-medium text-black">+${extrasTotal}</td></tr>}
+                  <tr><td className="py-2 text-gray-500">Schedule</td><td className="py-2 text-right font-medium text-black">{frequency}</td></tr>
                 </tbody>
               </table>
+              {basePricing && !basePricing.isRange && extrasTotal === 0 && <div className="text-center mt-4"><p className="text-3xl font-black text-black">{basePricing.price}</p><p className="text-xs text-gray-400">{frequency === "One-off" ? "One-off clean" : `${frequency} clean`}</p></div>}
+              {basePricing && (basePricing.isRange || extrasTotal > 0) && <div className="text-center mt-4"><p className="text-3xl font-black text-black">{basePricing.price}</p>{extrasTotal > 0 && <p className="text-xs text-gray-400">+ ${extrasTotal} in extras</p>}{basePricing.isRange && <p className="text-xs text-gray-400">Final price depends on property condition</p>}</div>}
+              {showRecurringNote && <div className="mt-4 p-3 bg-terracotta/5 rounded-lg border border-terracotta/10"><p className="text-sm font-bold text-terracotta">{frequency === "Weekly" ? "Save with weekly cleaning — from $149/visit" : frequency === "Fortnightly" ? "Fortnightly cleaning — from $159/visit" : "Monthly cleaning — from $169/visit"}</p></div>}
             </div>
-
-            {basePricing && !basePricing.isRange && extrasTotal === 0 && (
-              <div className="text-center mb-6">
-                <p className="text-3xl sm:text-4xl font-black text-black">{basePricing.price}</p>
-                <p className="text-sm text-gray-500 mt-1">
-                  {frequency === "One-off" ? "One-off clean" : `${frequency} clean`}
-                </p>
-              </div>
-            )}
-
-            {basePricing && (basePricing.isRange || extrasTotal > 0) && (
-              <div className="text-center mb-6">
-                <p className="text-3xl sm:text-4xl font-black text-black">{basePricing.price}</p>
-                {extrasTotal > 0 && (
-                  <p className="text-sm text-gray-500 mt-1">+ ${extrasTotal} in extras</p>
-                )}
-                {basePricing.isRange && (
-                  <p className="text-xs text-gray-400 mt-1">Final price depends on property condition and exact scope</p>
-                )}
-              </div>
-            )}
-
-            {showRecurringNote && (
-              <div className="p-4 bg-sage/10 rounded-lg border border-sage/20 text-center mb-6">
-                <p className="text-sm font-bold text-sage">
-                  {frequency === "Weekly" && "Save with weekly cleaning — from $149/visit"}
-                  {frequency === "Fortnightly" && "Fortnightly cleaning — from $159/visit"}
-                  {frequency === "Monthly" && "Monthly cleaning — from $169/visit"}
-                </p>
-                <p className="text-xs text-gray-500 mt-1">Recurring rates available for regular bookings</p>
-              </div>
-            )}
-
-            {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
 
             <InlineTestimonial review={reviews.find((r) => r.id === "r9")!} />
 
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={sending}
-              className="w-full bg-black text-white py-4 rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors disabled:opacity-50"
-            >
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+            <button onClick={handleSubmit} disabled={sending} className="w-full bg-black text-white py-4 rounded-xl text-sm font-extrabold hover:bg-gray-800 transition-colors disabled:opacity-40">
               {sending ? "Sending..." : "Request This Quote"}
             </button>
-            <p className="text-xs text-gray-400 text-center mt-3">
-              We&apos;ll contact you as soon as possible, usually within 1–2 hours.
-            </p>
-
-            {error && (
-              <a
-                href="https://wa.me/61434139623"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-center text-sm font-semibold text-black underline underline-offset-4 mt-4 hover:text-gray-600 transition-colors"
-              >
-                Send it via WhatsApp instead
-              </a>
-            )}
           </div>
         );
-
-      default:
-        return null;
+      default: return null;
     }
   };
 
@@ -522,30 +300,17 @@ export default function QuotePage() {
       <div>
         <section className="bg-black text-white py-16 lg:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl sm:text-5xl font-extrabold">Get an Instant Quote</h1>
-            <p className="mt-3 text-lg text-gray-300 max-w-xl">
-              Tell us about your property and get an instant price — no waiting, no obligation.
-            </p>
+            <h1 className="text-3xl sm:text-5xl font-extrabold">Free instant quote</h1>
+            <p className="mt-3 text-lg text-gray-300 max-w-xl">Thanks for reaching out. A Ritepro team member will contact you shortly.</p>
           </div>
         </section>
         <section className="py-20">
-          <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                <svg className="w-8 h-8 text-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h3 className="mt-4 text-xl font-bold text-black">Thank You!</h3>
-              <p className="mt-2 text-gray-500 text-sm">
-                Your quote request has been sent. We&apos;ll contact you as soon as possible, usually within 1–2 hours.
-              </p>
-              <Link
-                href="/"
-                className="mt-6 inline-block text-sm text-gray-600 font-semibold hover:text-black underline"
-              >
-                Return to Home
-              </Link>
+          <div className="max-w-xl mx-auto px-4 text-center">
+            <div className="bg-white rounded-3xl p-12 border border-gray-100 shadow-xl shadow-gray-100/50">
+              <h3 className="text-2xl font-extrabold text-black">Request received</h3>
+              <p className="mt-4 text-gray-500 leading-relaxed">Thank you. A member of the Ritepro team will review your request and be in touch shortly — usually within the hour.</p>
+              <div className="mt-8 w-10 h-0.5 bg-terracotta mx-auto" />
+              <p className="mt-4 text-xs text-gray-400">We respond between 6am and 8pm, 7 days a week.</p>
             </div>
           </div>
         </section>
@@ -557,100 +322,26 @@ export default function QuotePage() {
     <div>
       <section className="bg-black text-white py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl sm:text-5xl font-extrabold">Get an Instant Quote</h1>
-          <p className="mt-3 text-lg text-gray-300 max-w-xl">
-            Tell us about your property and get an instant price — no waiting, no obligation.
-          </p>
+          <h1 className="text-3xl sm:text-5xl font-extrabold">Free instant quote</h1>
+          <p className="mt-3 text-lg text-gray-300 max-w-xl">Tell us about your property and get an instant price — no waiting, no obligation.</p>
         </div>
       </section>
-
       <section className="py-16">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Progress */}
-          <div className="flex items-center justify-center gap-0.5 sm:gap-1 mb-8 sm:mb-10">
+          <div className="flex items-center justify-center gap-1 mb-8">
             {stepLabels.map((label, i) => (
               <div key={label} className="flex items-center">
-                <div
-                  className={`flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full text-[10px] sm:text-xs font-bold transition-colors ${
-                    i <= step
-                      ? "bg-terracotta text-white"
-                      : "bg-gray-100 text-gray-400"
-                  }`}
-                >
-                  {i + 1}
-                </div>
-                {i < stepLabels.length - 1 && (
-                  <div
-                    className={`w-3 sm:w-8 lg:w-12 h-0.5 mx-0.5 sm:mx-1 transition-colors ${
-                      i < step ? "bg-terracotta" : "bg-gray-200"
-                    }`}
-                  />
-                )}
+                <div className={`w-8 h-8 rounded-full text-xs font-extrabold flex items-center justify-center transition-colors ${i <= step ? "bg-terracotta text-white" : "bg-gray-100 text-gray-400"}`}>{i + 1}</div>
+                {i < stepLabels.length - 1 && <div className={`w-8 lg:w-16 h-0.5 mx-1 transition-colors ${i < step ? "bg-terracotta" : "bg-gray-200"}`} />}
               </div>
             ))}
           </div>
-
-          {/* Step label */}
-          <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider text-center mb-2">
-            Step {step + 1} of 6
-          </p>
+          <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider text-center mb-2">Step {step + 1} of 3</p>
           <p className="text-center text-sm font-medium text-gray-700 mb-8">{stepLabels[step]}</p>
-
-          {/* Content */}
           {stepContent()}
-
-          {/* Navigation */}
           <div className="flex justify-between mt-8">
-            <button
-              type="button"
-              onClick={prevStep}
-              className={`px-6 py-3 rounded-lg text-sm font-semibold transition-colors ${
-                step === 0
-                  ? "invisible"
-                  : "text-gray-600 hover:bg-gray-100"
-              }`}
-            >
-              Back
-            </button>
-
-            {step < 5 && (
-              <button
-                type="button"
-                onClick={nextStep}
-                disabled={!canProceed()}
-                className="px-8 py-3 bg-black text-white rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors disabled:opacity-40"
-              >
-                {step === 4 ? "Review Quote" : "Next"}
-              </button>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact info sidebar */}
-      <section className="pb-16">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border-t border-gray-100 pt-8">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center text-sm">
-              <div>
-                <span className="text-gray-400 font-semibold">Phone</span>
-                <p className="text-black font-medium">+61 434 139 623</p>
-              </div>
-              <div>
-                <span className="text-gray-400 font-semibold">Email</span>
-                <p className="text-black font-medium">riteprocleaningservices@gmail.com</p>
-              </div>
-              <div>
-                <span className="text-gray-400 font-semibold">WhatsApp</span>
-                <a
-                  href="https://wa.me/61434139623"
-                  target="_blank"
-                  className="text-black font-medium hover:text-slate transition-colors"
-                >
-                  Chat with us
-                </a>
-              </div>
-            </div>
+            <button onClick={prevStep} className={`px-6 py-3 rounded-xl text-sm font-semibold transition-colors ${step === 0 ? "invisible" : "text-gray-600 hover:bg-gray-100"}`}>Back</button>
+            {step < 2 && <button onClick={nextStep} disabled={!canProceed()} className="px-8 py-3 bg-black text-white rounded-xl text-sm font-extrabold hover:bg-gray-800 transition-colors disabled:opacity-40">Next</button>}
           </div>
         </div>
       </section>
