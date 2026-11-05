@@ -16,22 +16,20 @@ export const metadata: Metadata = {
   },
 };
 
-type CommercialService = {
+type ServiceCard = {
   name: string;
   tagline: string;
   description: string;
   from?: string;
-  popular?: boolean;
 };
 
-const commercialServices: CommercialService[] = [
+const services: ServiceCard[] = [
   {
     name: "Commercial Cleaning",
     tagline: "Offices · Co-working · Facilities",
     description:
       "Office and facility cleaning that stays consistent. Checklists, compliance documentation, and quality reporting included.",
     from: "$600",
-    popular: true,
   },
   {
     name: "Strata & Body Corporate",
@@ -47,76 +45,33 @@ const commercialServices: CommercialService[] = [
   },
 ];
 
-const industries = [
-  "Offices & co-working spaces",
-  "Medical & allied health",
-  "Childcare centres",
-  "Retail & hospitality",
-  "Strata & body corporate",
-  "Schools & education",
-  "Warehouses & industrial",
-  "Community organisations",
-];
-
-const qualityPoints = [
+const pricing = [
   {
-    title: "Standardised Checklists",
-    desc: "Every visit follows a documented checklist. Nothing gets missed.",
+    label: "Small",
+    sqft: "Under 5,000 sq ft",
+    price: "$600",
+    includes: ["Standard office areas", "Outdoor and common areas", "Basic compliance reporting"],
   },
   {
-    title: "Police-Checked & Insured",
-    desc: "Every team member holds a current police check and Blue Card. Full insurance coverage.",
+    label: "Medium",
+    sqft: "5,000 – 15,000 sq ft",
+    price: "$1,000",
+    includes: ["Full office fit-out coverage", "WHS documentation", "Full compliance reports"],
   },
   {
-    title: "Compliance Documentation",
-    desc: "Service reports, WHS documentation, and incident reporting provided for your records.",
-  },
-  {
-    title: "Dedicated Account Contact",
-    desc: "A real office team manages scheduling, communication, and quality follow-up.",
+    label: "Large",
+    sqft: "15,000 – 30,000 sq ft",
+    price: "$2,000",
+    includes: ["Multiple floors and zones", "Dedicated site coordinator", "Incident and compliance records"],
   },
 ];
 
-const faqs = [
-  {
-    question: "Do you clean after hours?",
-    answer:
-      "Our standard hours are Monday to Friday, 7am to 4pm. If you need cleaning outside these hours, let us know during quoting and we will see what we can arrange.",
-  },
-  {
-    question: "How do you handle keys and alarm access?",
-    answer:
-      "We manage keys, alarm codes, and access instructions securely. All team members are police-checked and follow strict protocols for site access and lockup.",
-  },
-  {
-    question: "Are you insured?",
-    answer:
-      "Yes. We carry public liability and professional indemnity insurance. Certificates of currency are available on request.",
-  },
-  {
-    question: "Do you work around tenants and building management?",
-    answer:
-      "Yes. We coordinate access with building managers, strata committees or tenants as needed, and keep communication clear so nothing disrupts your operations.",
-  },
-  {
-    question: "Do you offer recurring commercial cleaning?",
-    answer:
-      "Yes. Recurring schedules are available for offices, strata common areas and specialist sites, and are scheduled around your business hours.",
-  },
+const alsoOffered = [
+  "Carpet steam cleaning",
+  "Window cleaning (interior)",
+  "Pressure washing",
+  "End-of-lease cleaning",
 ];
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((faq) => ({
-    "@type": "Question",
-    name: faq.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: faq.answer,
-    },
-  })),
-};
 
 function Stars({ className = "h-4 w-4" }: { className?: string }) {
   return (
@@ -137,11 +92,6 @@ export default function CommercialPage() {
 
   return (
     <div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-
       {/* HERO */}
       <section className="relative overflow-hidden bg-gray-50">
         <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:items-center lg:gap-14 lg:px-8 lg:py-24">
@@ -155,9 +105,8 @@ export default function CommercialPage() {
               <span className="text-terracotta">done properly.</span>
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-gray-600 sm:text-lg">
-              Reliable, compliant cleaning for offices, strata buildings and
-              specialist sites across Brisbane. Scoped, priced and documented
-              before we start.
+              Office, strata and specialist site cleans across Brisbane. Scoped,
+              priced and documented before we start.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -231,9 +180,7 @@ export default function CommercialPage() {
                 </p>
                 <p className="mt-1 text-2xl font-extrabold text-gray-900">
                   $600{" "}
-                  <span className="text-sm font-medium text-gray-400">
-                    per visit
-                  </span>
+                  <span className="text-sm font-medium text-gray-400">per visit</span>
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-gray-500">
                   Fixed per-visit pricing confirmed before we start.
@@ -253,8 +200,8 @@ export default function CommercialPage() {
               label: `${googleRating.count} Google reviews`,
             },
             { value: "Brisbane-wide", label: "Commercial cleaning services" },
-            { value: "Fully insured", label: "Police-checked & Blue Card" },
-            { value: "Compliance-first", label: "Reports & documentation" },
+            { value: "Fully insured", label: "Police-checked &amp; Blue Card" },
+            { value: "Compliance-first", label: "Service reports &amp; documentation" },
           ].map((item) => (
             <div key={item.label} className="flex items-start gap-3">
               <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-terracotta" />
@@ -286,12 +233,12 @@ export default function CommercialPage() {
           </div>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {commercialServices.map((service) => (
+            {services.map((service) => (
               <article
                 key={service.name}
                 className="group relative flex flex-col rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-terracotta/30 hover:shadow-lg"
               >
-                {service.popular && (
+                {service.name === "Commercial Cleaning" && (
                   <span className="absolute right-4 top-4 rounded-full bg-terracotta/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-terracotta">
                     Most booked
                   </span>
@@ -342,126 +289,72 @@ export default function CommercialPage() {
               </article>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* INDUSTRIES */}
-      <section id="industries" className="scroll-mt-24 bg-white py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
-            <div className="lg:col-span-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-terracotta">
-                Industries
-              </p>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                Industries we serve across Brisbane.
-              </h2>
-            </div>
-            <p className="text-sm leading-relaxed text-gray-600 lg:col-span-5">
-              Offices, clinics, schools, retail and industrial sites — wherever
-              there is a floor that needs a clean.
-            </p>
-          </div>
-
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {industries.map((industry) => (
-              <div
-                key={industry}
-                className="rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 text-center transition-colors hover:border-terracotta/30"
+          <div className="mt-6 flex flex-wrap items-center gap-2">
+            <span className="mr-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
+              Also available
+            </span>
+            {alsoOffered.map((item) => (
+              <span
+                key={item}
+                className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs text-gray-600"
               >
-                <span className="text-sm font-medium text-gray-700">{industry}</span>
-              </div>
+                {item}
+              </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* QUALITY */}
-      <section id="quality" className="scroll-mt-24 bg-gray-50 py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
-            <div className="lg:col-span-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-terracotta">
-                Quality assurance
-              </p>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                Compliance you can actually see.
-              </h2>
-            </div>
-            <p className="text-sm leading-relaxed text-gray-600 lg:col-span-5">
-              Commercial cleaning is held to higher standards — documented,
-              reported and auditable.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {qualityPoints.map((point) => (
-              <div
-                key={point.title}
-                className="flex flex-col rounded-2xl border border-gray-200 bg-white p-6"
-              >
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-terracotta/10 text-terracotta">
-                  {point.title === "Standardised Checklists" ? (
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 2v4M16 2v4M12 12v4" />
-                    </svg>
-                  ) : point.title === "Police-Checked & Insured" ? (
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    </svg>
-                  ) : point.title === "Compliance Documentation" ? (
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M14 2v6h6" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16 13H8M16 17H8" />
-                    </svg>
-                  ) : (
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                    </svg>
-                  )}
-                </span>
-                <h3 className="mt-5 text-base font-bold text-gray-900">{point.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-gray-600">{point.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PRICING */}
+      {/* PRICING BY FLOOR AREA */}
       <section id="pricing" className="scroll-mt-24 bg-white py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
             <div className="lg:col-span-7">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-terracotta">
-                Pricing
+                Pricing by floor area
               </p>
               <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                Clear prices. No surprises.
+                The bigger the space, the more we matter.
               </h2>
             </div>
             <p className="text-sm leading-relaxed text-gray-600 lg:col-span-5">
-              Fixed per-visit pricing based on floor area. No hourly guesswork,
-              no upsells on the day.
+              Commercial cleans are priced on a per-visit basis tied to floor
+              area. Fixed, scoped and documented before we start.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {[
-              { label: "Small", sqft: "Under 5,000 sq ft", price: "$600" },
-              { label: "Medium", sqft: "5,000 – 15,000 sq ft", price: "$1,000" },
-              { label: "Large", sqft: "15,000 – 30,000 sq ft", price: "$2,000" },
-            ].map((row) => (
-              <div key={row.label} className="flex flex-col rounded-2xl border border-gray-200 bg-white p-6 text-center shadow-sm">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-terracotta">{row.label}</h3>
-                <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900">{row.price}</p>
-                <p className="mt-1 text-sm text-gray-500">per visit</p>
-                <p className="mt-2 text-xs text-gray-400">{row.sqft}</p>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {pricing.map((tier) => (
+              <div
+                key={tier.label}
+                className="flex flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
+              >
+                <h3 className="text-sm font-bold uppercase tracking-wider text-terracotta">
+                  {tier.label}
+                </h3>
+                <div className="mt-5">
+                  <p className="text-3xl font-extrabold tracking-tight text-gray-900">
+                    {tier.price}
+                  </p>
+                  <p className="text-sm text-gray-500">per visit</p>
+                </div>
+                <p className="mt-5 text-xs leading-relaxed text-gray-600">
+                  {tier.sqft}
+                </p>
+
+                <ul className="mt-6 space-y-3">
+                  {tier.includes.map((inc) => (
+                    <li key={inc} className="flex items-start gap-3">
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-terracotta" />
+                      <span className="text-sm text-gray-600">{inc}</span>
+                    </li>
+                  ))}
+                </ul>
+
                 <Link
                   href="/quote"
-                  className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-terracotta px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-terracotta/90"
+                  className="mt-8 inline-flex items-center justify-center gap-2 rounded-lg bg-terracotta px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-terracotta/90"
                 >
                   Get my quote
                 </Link>
@@ -469,7 +362,7 @@ export default function CommercialPage() {
             ))}
           </div>
 
-          <div className="mt-4 overflow-hidden rounded-2xl bg-black p-6 text-white sm:p-8">
+          <div className="mt-6 overflow-hidden rounded-2xl bg-black p-6 text-white sm:p-8">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-terracotta-light">
@@ -479,8 +372,8 @@ export default function CommercialPage() {
                   Save with a managed schedule.
                 </h3>
                 <p className="mt-2 max-w-md text-sm leading-relaxed text-gray-400">
-                  Recurring commercial cleaning scheduled around your business
-                  hours, with service reporting on every visit.
+                  Same-visit pricing, scheduled around your business hours, with
+                  full service reports on every visit.
                 </p>
               </div>
               <Link
@@ -501,51 +394,74 @@ export default function CommercialPage() {
         </div>
       </section>
 
-      {/* PROCESS */}
-      <section id="process" className="scroll-mt-24 bg-gray-50 py-16 sm:py-20 lg:py-24">
+      {/* WHAT YOU GET AFTER EVERY VISIT */}
+      <section id="reports" className="scroll-mt-24 bg-gray-50 py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-terracotta">
-              How it works
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Three steps to consistent office cleaning.
-            </h2>
-            <p className="mt-4 text-sm leading-relaxed text-gray-600 sm:text-base">
-              No site visits for quoting, no hourly guesswork, no surprises on
-              the day.
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
+            <div className="lg:col-span-7">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-terracotta">
+                After every visit
+              </p>
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                Documented, auditable quality.
+              </h2>
+            </div>
+            <p className="text-sm leading-relaxed text-gray-600 lg:col-span-5">
+              We don&apos;t just clean. We leave behind the paperwork your building
+              managers, strata committees and compliance officers expect.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
-                number: "01",
-                title: "Tell us about your site",
-                desc: "Industry, floor area, access needs and current standards.",
+                icon: (
+                  <svg className="h-10 w-10" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 6-4-4H5m0 0 4-4m0 0-4-4M6 16h11a5 5 0 0 0 0-10 6 6 0 0 1 0 12z" />
+                  </svg>
+                ),
+                title: "Standardised checklists",
+                desc: "Every visit follows a documented checklist so nothing gets missed. Shared digitally with you.",
               },
               {
-                number: "02",
-                title: "Get your fixed quote",
-                desc: "Transparent per-visit pricing based on floor area. No hourly guesswork.",
+                icon: (
+                  <svg className="h-10 w-10" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                ),
+                title: "Public liability insurance",
+                desc: "Insured and police-checked team members carry current public liability cover.",
               },
               {
-                number: "03",
-                title: "We keep it consistent",
-                desc: "Scheduled cleaning with service reporting and quality follow-up.",
+                icon: (
+                  <svg className="h-10 w-10" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M14 2v6h6" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 13H8M16 17H8" />
+                  </svg>
+                ),
+                title: "WHS documentation",
+                desc: "Health and safety records available for your building managers and committees.",
               },
-            ].map((step) => (
-              <div key={step.number} className="relative">
-                <div className="flex items-center gap-4">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-terracotta/10 text-sm font-extrabold text-terracotta">
-                    {step.number}
-                  </span>
-                  {step.number !== "03" && (
-                    <span className="hidden h-px flex-1 bg-gray-200 md:block" />
-                  )}
+              {
+                icon: (
+                  <svg className="h-10 w-10" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                ),
+                title: "Service reports",
+                desc: "Post-visit reports shared digitally every time, so you have a record of what was cleaned.",
+              },
+            ].map((point) => (
+              <div
+                key={point.title}
+                className="flex items-center gap-4 rounded-2xl border border-gray-200 bg-white p-6"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-terracotta/10 text-terracotta">{point.icon}</span>
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900">{point.title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-gray-600">{point.desc}</p>
                 </div>
-                <h3 className="mt-5 text-lg font-bold text-gray-900">{step.title}</h3>
-                <p className="mt-2 max-w-sm text-sm leading-relaxed text-gray-600">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -588,60 +504,6 @@ export default function CommercialPage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section id="faq" className="scroll-mt-24 bg-gray-50 py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8">
-          <div className="lg:col-span-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-terracotta">
-              FAQ
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Questions, answered.
-            </h2>
-            <p className="mt-4 text-sm leading-relaxed text-gray-600">
-              Everything you need to know before booking commercial cleaning.
-            </p>
-
-            <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-5">
-              <p className="text-sm font-bold text-gray-900">Still not sure?</p>
-              <p className="mt-1 text-sm leading-relaxed text-gray-500">
-                Talk to the team on{" "}
-                <a href="tel:+61434139623" className="font-medium text-gray-700 underline underline-offset-4 transition-colors hover:text-terracotta">
-                  +61 434 139 623
-                </a>
-                .
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <a href="tel:+61434139623" className="inline-flex items-center justify-center rounded-lg bg-black px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-gray-800">
-                  Call us
-                </a>
-                <a href="https://wa.me/61434139623" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-xs font-semibold text-gray-900 transition-colors hover:border-gray-400 hover:bg-gray-100">
-                  WhatsApp
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-8">
-            <div className="divide-y divide-gray-200 border-y border-gray-200">
-              {faqs.map((faq) => (
-                <details key={faq.question} className="group py-5">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left [&::-webkit-details-marker]:hidden">
-                    <span className="text-base font-semibold text-gray-900">{faq.question}</span>
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition-transform group-open:rotate-45">
-                      <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                      </svg>
-                    </span>
-                  </summary>
-                  <p className="mt-3 max-w-2xl pr-10 text-sm leading-relaxed text-gray-600">{faq.answer}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FINAL CTA */}
       <section className="relative overflow-hidden bg-black text-white">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -659,8 +521,8 @@ export default function CommercialPage() {
                 Ready for consistent commercial cleaning?
               </h2>
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-gray-400 sm:text-base">
-                Let us take facility management off your plate. Get a fixed quote
-                in about 60 seconds — no waiting, no obligation.
+                Let us take facility management off your plate. Get a fixed
+                per-visit quote in about 60 seconds — no waiting, no obligation.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
