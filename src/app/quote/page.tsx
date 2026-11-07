@@ -13,8 +13,21 @@ type PropertyType = "House" | "Apartment" | "Townhouse";
 type Frequency = "One-off" | "Weekly" | "Fortnightly" | "Monthly";
 
 const propertyTypes: PropertyType[] = ["House", "Apartment", "Townhouse"];
-const bedroomOptions = [1, 2, 3, 4, 5, 6];
-const bathroomOptions = [1, 2, 3, 4];
+const bedroomOptions = [1, 2, 3, 4, 5, 6, 7];
+const bathroomOptions = [1, 2, 3, 4, 5];
+const MAX_BEDROOMS = 7;
+const MAX_BATHROOMS = 5;
+
+function formatCount(
+  count: number,
+  max: number,
+  singular: string,
+  plural: string
+) {
+  return count === max
+    ? `${count}+ ${plural}`
+    : `${count} ${count === 1 ? singular : plural}`;
+}
 const floorAreas = [
   "Under 500 m²",
   "500 – 1,500 m²",
@@ -99,7 +112,7 @@ export default function QuotePage() {
       `Category: ${category || "N/A"}`,
       `Service: ${selectedService?.label ?? "N/A"}`,
       isResidential
-        ? `Property: ${propertyType || "N/A"} · ${bedrooms} bedroom(s) / ${bathrooms} bathroom(s)`
+        ? `Property: ${propertyType || "N/A"} · ${formatCount(bedrooms, MAX_BEDROOMS, "bedroom", "bedrooms")} / ${formatCount(bathrooms, MAX_BATHROOMS, "bathroom", "bathrooms")}`
         : `Floor area: ${floorArea || "N/A"}`,
       `Frequency: ${frequency}`,
       `Extras: ${isResidential ? activeExtras.join(", ") || "None" : "N/A"}`,
@@ -169,7 +182,7 @@ export default function QuotePage() {
                 <option value="">Select Residential or Commercial</option>
                 {serviceCategories.map((option) => (
                   <option key={option.value} value={option.value}>
-                    {option.label} — {option.description}
+                    {option.label}
                   </option>
                 ))}
               </select>
@@ -240,7 +253,9 @@ export default function QuotePage() {
                   >
                     {bedroomOptions.map((count) => (
                       <option key={count} value={count}>
-                        {count} {count === 1 ? "bedroom" : "bedrooms"}
+                        {count === MAX_BEDROOMS
+                          ? `${count}+ bedrooms`
+                          : `${count} ${count === 1 ? "bedroom" : "bedrooms"}`}
                       </option>
                     ))}
                   </select>
@@ -257,7 +272,9 @@ export default function QuotePage() {
                   >
                     {bathroomOptions.map((count) => (
                       <option key={count} value={count}>
-                        {count} {count === 1 ? "bathroom" : "bathrooms"}
+                        {count === MAX_BATHROOMS
+                          ? `${count}+ bathrooms`
+                          : `${count} ${count === 1 ? "bathroom" : "bathrooms"}`}
                       </option>
                     ))}
                   </select>
@@ -498,7 +515,9 @@ export default function QuotePage() {
                     <tr>
                       <td className="py-2 text-gray-500">Property</td>
                       <td className="py-2 text-right font-medium text-black">
-                        {propertyType || "—"} · {bedrooms}BR / {bathrooms}Bath
+                        {propertyType || "—"} · {bedrooms}
+                        {bedrooms === MAX_BEDROOMS ? "+" : ""}BR / {bathrooms}
+                        {bathrooms === MAX_BATHROOMS ? "+" : ""}Bath
                       </td>
                     </tr>
                   ) : (
