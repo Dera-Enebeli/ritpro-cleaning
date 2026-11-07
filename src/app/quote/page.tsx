@@ -32,7 +32,7 @@ const frequencies: Frequency[] = ["One-off", "Weekly", "Fortnightly", "Monthly"]
 const labelClass =
   "mb-2 block text-xs font-extrabold uppercase tracking-wider text-gray-400";
 const selectClass =
-  "w-full rounded-xl border-2 border-gray-100 bg-white px-4 py-3 text-sm text-gray-900 transition-colors focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/15 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-400";
+  "w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/20 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-400";
 
 export default function QuotePage() {
   const [step, setStep] = useState<Step>(0);
@@ -146,7 +146,7 @@ export default function QuotePage() {
           <div className="space-y-8">
             <div>
               <h2 className="text-xl font-bold text-black mb-2">
-                Service & Property
+                What cleaning do you need?
               </h2>
               <p className="text-sm text-gray-500">
                 Choose the type of clean you need and tell us about the space.

@@ -252,7 +252,7 @@ export default function ResidentialPage() {
               Residential cleaning · Ipswich
             </p>
             <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-              House cleaning in Ipswich,{" "}
+              Residential cleaning in Ipswich,{" "}
               <span className="text-terracotta">done properly.</span>
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-gray-600 sm:text-lg">
@@ -496,14 +496,7 @@ export default function ResidentialPage() {
 
             <p className="mt-7 text-xs leading-relaxed text-gray-400">
               Add carpet steam cleaning, oven interiors, interior windows or
-              pressure washing to any visit.{" "}
-              <Link
-                href="/quote"
-                className="font-medium text-gray-600 underline underline-offset-4 transition-colors hover:text-terracotta"
-              >
-                Build your quote
-              </Link>
-              .
+              pressure washing to any visit.
             </p>
           </div>
         </div>
