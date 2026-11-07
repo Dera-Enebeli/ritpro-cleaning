@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { InlineTestimonial } from "@/components/ReviewCard";
 import { reviews } from "@/data/reviews";
 import { serviceCategories, servicesFor } from "@/data/services";
@@ -44,8 +44,213 @@ const frequencies: Frequency[] = ["One-off", "Weekly", "Fortnightly", "Monthly"]
 
 const labelClass =
   "mb-2 block text-xs font-extrabold uppercase tracking-wider text-gray-400";
-const selectClass =
-  "w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors focus:border-terracotta focus:outline-none focus:ring-2 focus:ring-terracotta/20 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-400";
+
+type DropdownOption = { value: string; label: string };
+
+function Dropdown({
+  id,
+  value,
+  onChange,
+  options,
+  placeholder = "Select an option",
+  disabled = false,
+}: {
+  id: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: DropdownOption[];
+  placeholder?: string;
+  disabled?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+
+  const selectedIndex = options.findIndex((option) => option.value === value);
+  const selected = selectedIndex >= 0 ? options[selectedIndex] : undefined;
+
+  useEffect(() => {
+    if (!open) return;
+
+    function handlePointerDown(event: PointerEvent) {
+      if (
+        rootRef.current &&
+        !rootRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }
+
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open || !listRef.current) return;
+    const active = listRef.current.querySelector<HTMLElement>(
+      `[data-index="${activeIndex}"]`
+    );
+    active?.scrollIntoView({ block: "nearest" });
+  }, [open, activeIndex]);
+
+  function choose(option: DropdownOption) {
+    onChange(option.value);
+    setOpen(false);
+  }
+
+  function toggleOpen() {
+    const next = !open;
+    setOpen(next);
+    if (next) setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0);
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLButtonElement>) {
+    if (disabled) return;
+
+    if (!open) {
+      if (["ArrowDown", "ArrowUp", "Enter", " "].includes(event.key)) {
+        event.preventDefault();
+        setOpen(true);
+      }
+      return;
+    }
+
+    switch (event.key) {
+      case "ArrowDown":
+        event.preventDefault();
+        setActiveIndex((index) => (index + 1) % options.length);
+        break;
+      case "ArrowUp":
+        event.preventDefault();
+        setActiveIndex(
+          (index) => (index - 1 + options.length) % options.length
+        );
+        break;
+      case "Home":
+        event.preventDefault();
+        setActiveIndex(0);
+        break;
+      case "End":
+        event.preventDefault();
+        setActiveIndex(options.length - 1);
+        break;
+      case "Enter":
+      case " ":
+        event.preventDefault();
+        if (options[activeIndex]) choose(options[activeIndex]);
+        break;
+      case "Escape":
+        event.preventDefault();
+        setOpen(false);
+        break;
+      case "Tab":
+        setOpen(false);
+        break;
+    }
+  }
+
+  return (
+    <div ref={rootRef} className="relative">
+      <button
+        type="button"
+        id={id}
+        onClick={() => {
+          if (!disabled) toggleOpen();
+        }}
+        onKeyDown={handleKeyDown}
+        disabled={disabled}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={`${id}-listbox`}
+        className={`flex w-full items-center justify-between gap-3 rounded-lg border bg-white px-4 py-3 text-left text-sm transition-all ${
+          disabled
+            ? "cursor-not-allowed border-gray-200 bg-gray-50 text-gray-400"
+            : open
+              ? "border-terracotta text-gray-900 ring-2 ring-terracotta/20"
+              : "border-gray-200 text-gray-900 hover:border-gray-300"
+        }`}
+      >
+        <span className={`truncate ${selected ? "" : "text-gray-400"}`}>
+          {selected ? selected.label : placeholder}
+        </span>
+        <svg
+          className={`h-4 w-4 shrink-0 transition-transform duration-150 ${
+            disabled ? "text-gray-300" : "text-gray-400"
+          } ${open ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m6 9 6 6 6-6"
+          />
+        </svg>
+      </button>
+
+      {open && (
+        <ul
+          ref={listRef}
+          id={`${id}-listbox`}
+          role="listbox"
+          aria-labelledby={id}
+          className="absolute z-30 mt-2 max-h-60 w-full overflow-auto rounded-xl border border-gray-100 bg-white p-1.5 shadow-lg shadow-gray-200/70 ring-1 ring-black/[0.02] [scrollbar-color:#d1d5db_transparent] [scrollbar-width:thin]"
+        >
+          {options.map((option, index) => {
+            const isSelected = option.value === value;
+            const isActive = index === activeIndex;
+
+            return (
+              <li
+                key={option.value}
+                id={`${id}-option-${index}`}
+                data-index={index}
+                role="option"
+                aria-selected={isSelected}
+                onMouseDown={(event) => event.preventDefault()}
+                onMouseEnter={() => setActiveIndex(index)}
+                onClick={() => choose(option)}
+                className={`flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
+                  isActive ? "bg-gray-50" : ""
+                } ${isSelected ? "font-semibold text-gray-900" : "text-gray-600"}`}
+              >
+                <span className="truncate">{option.label}</span>
+                {isSelected && (
+                  <svg
+                    className="h-4 w-4 shrink-0 text-terracotta"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m4.5 12.75 6 6 9-13.5"
+                    />
+                  </svg>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export default function QuotePage() {
   const [step, setStep] = useState<Step>(0);
@@ -170,47 +375,37 @@ export default function QuotePage() {
               <label htmlFor="service-category" className={labelClass}>
                 Service type
               </label>
-              <select
+              <Dropdown
                 id="service-category"
                 value={category}
-                onChange={(event) =>
-                  selectCategory(event.target.value as ServiceCategory | "")
+                onChange={(value) =>
+                  selectCategory(value as ServiceCategory | "")
                 }
-                className={selectClass}
-                required
-              >
-                <option value="">Select Residential or Commercial</option>
-                {serviceCategories.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+                options={serviceCategories.map((option) => ({
+                  value: option.value,
+                  label: option.label,
+                }))}
+                placeholder="Select Residential or Commercial"
+              />
             </div>
 
             <div>
               <label htmlFor="service-option" className={labelClass}>
                 What do you need cleaned?
               </label>
-              <select
+              <Dropdown
                 id="service-option"
                 value={serviceValue}
-                onChange={(event) => setServiceValue(event.target.value)}
-                className={selectClass}
+                onChange={setServiceValue}
+                options={availableServices.map((option) => ({
+                  value: option.value,
+                  label: option.label,
+                }))}
+                placeholder={
+                  category ? "Select a service" : "Choose a service type first"
+                }
                 disabled={!category}
-                required
-              >
-                <option value="">
-                  {category
-                    ? "Select a service"
-                    : "Choose a service type first"}
-                </option>
-                {availableServices.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+              />
               {selectedService && (
                 <p className="mt-2 text-xs leading-relaxed text-gray-500">
                   {selectedService.description}
@@ -224,60 +419,52 @@ export default function QuotePage() {
                   <label htmlFor="property-type" className={labelClass}>
                     Property type
                   </label>
-                  <select
+                  <Dropdown
                     id="property-type"
                     value={propertyType}
-                    onChange={(event) =>
-                      setPropertyType(event.target.value as PropertyType | "")
+                    onChange={(value) =>
+                      setPropertyType(value as PropertyType | "")
                     }
-                    className={selectClass}
-                    required
-                  >
-                    <option value="">Select property type</option>
-                    {propertyTypes.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))}
-                  </select>
+                    options={propertyTypes.map((type) => ({
+                      value: type,
+                      label: type,
+                    }))}
+                    placeholder="Select property type"
+                  />
                 </div>
                 <div>
                   <label htmlFor="bedrooms" className={labelClass}>
                     Bedrooms
                   </label>
-                  <select
+                  <Dropdown
                     id="bedrooms"
-                    value={bedrooms}
-                    onChange={(event) => setBedrooms(Number(event.target.value))}
-                    className={selectClass}
-                  >
-                    {bedroomOptions.map((count) => (
-                      <option key={count} value={count}>
-                        {count === MAX_BEDROOMS
+                    value={String(bedrooms)}
+                    onChange={(value) => setBedrooms(Number(value))}
+                    options={bedroomOptions.map((count) => ({
+                      value: String(count),
+                      label:
+                        count === MAX_BEDROOMS
                           ? `${count}+ bedrooms`
-                          : `${count} ${count === 1 ? "bedroom" : "bedrooms"}`}
-                      </option>
-                    ))}
-                  </select>
+                          : `${count} ${count === 1 ? "bedroom" : "bedrooms"}`,
+                    }))}
+                  />
                 </div>
                 <div>
                   <label htmlFor="bathrooms" className={labelClass}>
                     Bathrooms
                   </label>
-                  <select
+                  <Dropdown
                     id="bathrooms"
-                    value={bathrooms}
-                    onChange={(event) => setBathrooms(Number(event.target.value))}
-                    className={selectClass}
-                  >
-                    {bathroomOptions.map((count) => (
-                      <option key={count} value={count}>
-                        {count === MAX_BATHROOMS
+                    value={String(bathrooms)}
+                    onChange={(value) => setBathrooms(Number(value))}
+                    options={bathroomOptions.map((count) => ({
+                      value: String(count),
+                      label:
+                        count === MAX_BATHROOMS
                           ? `${count}+ bathrooms`
-                          : `${count} ${count === 1 ? "bathroom" : "bathrooms"}`}
-                      </option>
-                    ))}
-                  </select>
+                          : `${count} ${count === 1 ? "bathroom" : "bathrooms"}`,
+                    }))}
+                  />
                 </div>
               </div>
             ) : (
@@ -285,21 +472,17 @@ export default function QuotePage() {
                 <label htmlFor="floor-area" className={labelClass}>
                   Approximate floor area
                 </label>
-                <select
+                <Dropdown
                   id="floor-area"
                   value={floorArea}
-                  onChange={(event) => setFloorArea(event.target.value)}
-                  className={selectClass}
+                  onChange={setFloorArea}
+                  options={floorAreas.map((area) => ({
+                    value: area,
+                    label: area,
+                  }))}
+                  placeholder="Select floor area"
                   disabled={!category}
-                  required
-                >
-                  <option value="">Select floor area</option>
-                  {floorAreas.map((area) => (
-                    <option key={area} value={area}>
-                      {area}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
             )}
           </div>
@@ -320,20 +503,15 @@ export default function QuotePage() {
               <label htmlFor="frequency" className={labelClass}>
                 How often?
               </label>
-              <select
+              <Dropdown
                 id="frequency"
                 value={frequency}
-                onChange={(event) =>
-                  setFrequency(event.target.value as Frequency)
-                }
-                className={selectClass}
-              >
-                {frequencies.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+                onChange={(value) => setFrequency(value as Frequency)}
+                options={frequencies.map((option) => ({
+                  value: option,
+                  label: option,
+                }))}
+              />
             </div>
 
             {isResidential && (
