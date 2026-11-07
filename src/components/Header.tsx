@@ -1,28 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
-const navLinks = [
+const mainLinks = [
   { href: "/", label: "Home" },
-  { href: "/residential", label: "Residential" },
-  { href: "/commercial", label: "Commercial" },
   { href: "/providers", label: "Providers" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/reviews", label: "Reviews" },
 ];
 
+const serviceLinks = [
+  { href: "/residential", label: "Residential Cleaning" },
+  { href: "/commercial", label: "Commercial Cleaning" },
+];
+
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const servicesRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   function isActive(href: string) {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
   }
+
+  const servicesActive = serviceLinks.some((link) => isActive(link.href));
+
+  // Close the desktop dropdown on Escape or a click outside it.
+  useEffect(() => {
+    if (!desktopServicesOpen) return;
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setDesktopServicesOpen(false);
+    }
+    function onPointerDown(event: MouseEvent | TouchEvent) {
+      if (
+        servicesRef.current &&
+        !servicesRef.current.contains(event.target as Node)
+      ) {
+        setDesktopServicesOpen(false);
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+    };
+  }, [desktopServicesOpen]);
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
@@ -40,7 +74,73 @@ export default function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-5">
-            {navLinks.map((link) => (
+            <Link
+              href="/"
+              className={`text-sm font-medium transition-colors ${
+                isActive("/")
+                  ? "text-black border-b-2 border-terracotta"
+                  : "text-gray-600 hover:text-terracotta"
+              }`}
+            >
+              Home
+            </Link>
+
+            <div className="relative" ref={servicesRef}>
+              <button
+                type="button"
+                onClick={() => setDesktopServicesOpen((open) => !open)}
+                aria-expanded={desktopServicesOpen}
+                aria-haspopup="true"
+                aria-controls="services-menu"
+                className={`inline-flex items-center gap-1.5 text-sm font-medium transition-colors ${
+                  servicesActive
+                    ? "text-black border-b-2 border-terracotta"
+                    : "text-gray-600 hover:text-terracotta"
+                }`}
+              >
+                Services
+                <svg
+                  className={`h-3.5 w-3.5 transition-transform ${
+                    desktopServicesOpen ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </button>
+
+              {desktopServicesOpen && (
+                <div
+                  id="services-menu"
+                  className="absolute left-1/2 top-full z-50 mt-4 w-56 -translate-x-1/2 overflow-hidden rounded-xl border border-gray-200 bg-white p-1.5 shadow-xl shadow-gray-200/60"
+                >
+                  {serviceLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setDesktopServicesOpen(false)}
+                      className={`block rounded-lg px-3.5 py-2.5 text-sm transition-colors ${
+                        isActive(link.href)
+                          ? "bg-gray-50 font-semibold text-black"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-black"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {mainLinks.slice(1).map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
@@ -53,6 +153,7 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+
             <a
               href="https://wa.me/61434139623"
               target="_blank"
@@ -79,7 +180,7 @@ export default function Header() {
               href="/quote"
               className="bg-black text-white px-5 py-2 rounded text-sm font-semibold hover:bg-gray-800 transition-colors"
             >
-              Free instant quote
+              Get a free quote
             </Link>
           </nav>
 
@@ -89,7 +190,7 @@ export default function Header() {
               className="inline-flex items-center gap-1.5 whitespace-nowrap rounded bg-black px-3.5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-gray-800 sm:px-4 sm:text-sm"
             >
               <span className="sm:hidden">Free quote</span>
-              <span className="hidden sm:inline">Free instant quote</span>
+              <span className="hidden sm:inline">Get a free quote</span>
               <svg
                 className="h-3.5 w-3.5 shrink-0"
                 fill="none"
@@ -108,7 +209,10 @@ export default function Header() {
 
             <button
               className="-mr-2 p-2"
-              onClick={() => setMobileOpen(!mobileOpen)}
+              onClick={() => {
+                setMobileOpen((open) => !open);
+                setMobileServicesOpen(false);
+              }}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
               aria-controls="mobile-nav"
@@ -145,7 +249,73 @@ export default function Header() {
             className="lg:hidden pb-4 border-t border-gray-100 pt-4"
           >
             <div className="flex flex-col gap-7">
-              {navLinks.map((link) => (
+              <Link
+                href="/"
+                className={`text-sm font-medium transition-colors ${
+                  isActive("/")
+                    ? "text-black font-semibold"
+                    : "text-gray-600 hover:text-terracotta"
+                }`}
+                onClick={() => setMobileOpen(false)}
+              >
+                Home
+              </Link>
+
+              <div className="flex flex-col gap-3">
+                <button
+                  type="button"
+                  onClick={() => setMobileServicesOpen((open) => !open)}
+                  aria-expanded={mobileServicesOpen}
+                  aria-controls="mobile-services-menu"
+                  className={`flex w-full items-center justify-between text-sm font-medium transition-colors ${
+                    servicesActive
+                      ? "text-black font-semibold"
+                      : "text-gray-600 hover:text-terracotta"
+                  }`}
+                >
+                  Services
+                  <svg
+                    className={`h-4 w-4 transition-transform ${
+                      mobileServicesOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </button>
+
+                {mobileServicesOpen && (
+                  <div
+                    id="mobile-services-menu"
+                    className="flex flex-col gap-3 border-l border-gray-200 pl-4"
+                  >
+                    {serviceLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className={`text-sm transition-colors ${
+                          isActive(link.href)
+                            ? "font-semibold text-black"
+                            : "text-gray-600 hover:text-terracotta"
+                        }`}
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {mainLinks.slice(1).map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}

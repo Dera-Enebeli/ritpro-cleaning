@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free instant quote",
+  title: "Free Quote",
   alternates: { canonical: "/quote" },
   description:
-    "Get an instant fixed-price cleaning quote in 60 seconds. No waiting, no obligation. Residential, commercial, end-of-lease, and more. Brisbane-wide.",
+    "Request a cleaning quote in about 60 seconds. No waiting, no obligation. Residential and commercial cleaning, end-of-lease, Airbnb turnovers and more across Ipswich.",
   openGraph: {
-    title: "Get an Instant Cleaning Quote | Ritepro Brisbane",
+    title: "Get a Free Cleaning Quote | Ritepro Cleaning",
     description:
-      "Get an instant fixed-price cleaning quote in 60 seconds. No waiting, no obligation. Residential, commercial, end-of-lease, and more. Brisbane-wide.",
+      "Request a cleaning quote in about 60 seconds. No waiting, no obligation. Residential and commercial cleaning, end-of-lease, Airbnb turnovers and more across Ipswich.",
   },
 };
 

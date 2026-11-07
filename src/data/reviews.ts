@@ -318,16 +318,16 @@ export const featuredReviews = reviews.filter((r) =>
 );
 
 export const reviewStats = {
-  average: 4.6,
+  average: 4.5,
   total: 50,
   distribution: [
-    { stars: 5, count: 34, percentage: 68 },
-    { stars: 4, count: 12, percentage: 24 },
-    { stars: 3, count: 4, percentage: 8 },
+    { stars: 5, count: 30, percentage: 60 },
+    { stars: 4, count: 15, percentage: 30 },
+    { stars: 3, count: 5, percentage: 10 },
   ],
 };
 
-export const googleRating = {
-  stars: 4.9,
+export const siteRating = {
+  stars: 4.5,
   count: 148,
 };

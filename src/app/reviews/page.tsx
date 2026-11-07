@@ -71,7 +71,7 @@ export default function ReviewsPage() {
 
             <div className="lg:col-span-3">
               <div className="bg-white/5 border border-gray-800 rounded-xl p-6 text-center">
-                <p className="text-5xl font-black text-white">4.6</p>
+                <p className="text-5xl font-black text-white">{reviewStats.average}</p>
                 <div className="flex justify-center gap-0.5 mt-2">
                   {Array.from({ length: 5 }, (_, i) => (
                     <svg key={i} className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">

@@ -14,7 +14,7 @@ const siteUrl = "https://riteprocleaning.com.au";
 export const metadata: Metadata = {
   title: {
     default: "Ritepro Cleaning Brisbane | Professional Cleaning Services",
-    template: "%s | Ritepro Cleaning Brisbane",
+    template: "%s | Ritepro Cleaning",
   },
   description:
     "Professional residential and commercial cleaning services in Brisbane. Reliable, insured, and satisfaction guaranteed. Get a free quote in 60 seconds.",
@@ -79,12 +79,11 @@ export default function RootLayout({
                 addressRegion: "QLD",
                 addressCountry: "AU",
               },
-              areaServed: "Brisbane",
-              priceRange: "$150 – $900",
+              areaServed: ["Brisbane", "Ipswich"],
               aggregateRating: {
                 "@type": "AggregateRating",
-                ratingValue: "4.6",
-                reviewCount: "50",
+                ratingValue: "4.5",
+                reviewCount: "148",
                 bestRating: "5",
               },
               sameAs: [

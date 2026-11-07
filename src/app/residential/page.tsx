@@ -2,124 +2,20 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ReviewCard } from "@/components/ReviewCard";
-import { googleRating, reviews } from "@/data/reviews";
+import { residentialServices } from "@/data/services";
+import { reviews, siteRating } from "@/data/reviews";
 
 export const metadata: Metadata = {
-  title: "Residential Cleaning Brisbane",
+  title: "Residential Cleaning Ipswich",
   alternates: { canonical: "/residential" },
   description:
-    "Professional home cleaning services in Brisbane. Weekly, fortnightly, monthly, deep cleaning, end-of-lease, and more. From $150. Insured and satisfaction guaranteed.",
+    "Professional home cleaning services in Ipswich. General, deep, end-of-lease, move-in and Airbnb cleans. Insured and satisfaction guaranteed.",
   openGraph: {
-    title: "Residential Cleaning Brisbane | Home Cleaning Services",
+    title: "Residential Cleaning Ipswich | Home Cleaning Services",
     description:
-      "Professional home cleaning services in Brisbane. Weekly, fortnightly, monthly, deep cleaning, end-of-lease, and more. From $150. Insured and satisfaction guaranteed.",
+      "Professional home cleaning services in Ipswich. General, deep, end-of-lease, move-in and Airbnb cleans. Insured and satisfaction guaranteed.",
   },
 };
-
-const services = [
-  {
-    name: "Regular clean",
-    tagline: "Weekly · Fortnightly · Monthly",
-    description:
-      "The same thorough routine every visit — kitchens, bathrooms, floors, surfaces and the small details that keep a home feeling looked after.",
-    from: "$150",
-    popular: true,
-    icon: (
-      <svg
-        className="h-5 w-5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.6}
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M2.25 12 11.54 2.71a1.5 1.5 0 0 1 2.12 0l8.29 8.29m-18 0h18m-18 0V21a.75.75 0 0 0 .75.75h4.5v-5.25a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5v5.25h4.5a.75.75 0 0 0 .75-.75v-9"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "Deep clean",
-    tagline: "One-off reset",
-    description:
-      "A top-to-bottom reset for built-up dust, grout, appliances and the areas a regular clean does not reach.",
-    from: "$280",
-    icon: (
-      <svg
-        className="h-5 w-5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.6}
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "End-of-lease",
-    tagline: "Bond-back guarantee",
-    description:
-      "A checklist-driven move-out clean built around the exit condition report, with a bond-back guarantee.",
-    from: "$450",
-    icon: (
-      <svg
-        className="h-5 w-5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.6}
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    name: "One-off & Airbnb",
-    tagline: "Turnovers · Move-ins · Resets",
-    description:
-      "Guest turnovers, move-in cleans and seasonal resets — one visit, held to the same standard as our regular service.",
-    from: "$220",
-    icon: (
-      <svg
-        className="h-5 w-5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.6}
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
-        />
-      </svg>
-    ),
-  },
-];
-
-const alsoAvailable = [
-  "Move-in / move-out",
-  "Spring clean",
-  "NDIS cleaning",
-  "Aged care homes",
-  "Apartment cleans",
-  "Carpet steam cleaning",
-];
 
 const included = [
   {
@@ -148,36 +44,38 @@ const included = [
   },
 ];
 
-const standardPricing = [
-  { label: "1 Bed / 1 Bath", price: "$150" },
-  { label: "2 Bed / 1 Bath", price: "$210" },
-  { label: "3 Bed / 2 Bath", price: "$290" },
-];
-
-const eolPricing = [
-  { label: "2 Bedroom", price: "$450" },
-  { label: "3 Bedroom", price: "$700" },
-];
-
-const addonPricing = [
-  { label: "Carpet cleaning (3 rooms)", price: "$170" },
-  { label: "Oven cleaning", price: "$150" },
-  { label: "Window cleaning (house)", price: "$320" },
-  { label: "Pressure washing", price: "$550" },
-  { label: "Airbnb turnover", price: "$220" },
-];
-
-const recurringPricing = [
-  { freq: "Weekly", price: "from $149" },
-  { freq: "Fortnightly", price: "from $159" },
-  { freq: "Monthly", price: "from $169" },
+const addons = [
+  {
+    label: "Carpet steam cleaning",
+    desc: "Deep steam clean for carpets and rugs, including high-traffic areas.",
+  },
+  {
+    label: "Oven cleaning",
+    desc: "Interior oven, racks, trays and door glass degreased and polished.",
+  },
+  {
+    label: "Interior window cleaning",
+    desc: "Streak-free glass, tracks, sills and frames inside the home.",
+  },
+  {
+    label: "Pressure washing",
+    desc: "Driveways, patios, paths and exterior hard surfaces.",
+  },
+  {
+    label: "Fridge & cupboard interiors",
+    desc: "Shelves, drawers and appliance interiors cleaned and wiped out.",
+  },
+  {
+    label: "Balcony & outdoor areas",
+    desc: "Sweeping, cobweb removal and surface wipe-down of outdoor spaces.",
+  },
 ];
 
 const steps = [
   {
     number: "01",
     title: "Tell us about your home",
-    desc: "Choose your service, property size and any extras in the instant quote tool.",
+    desc: "Choose your service, property size and any extras in the quote tool.",
   },
   {
     number: "02",
@@ -230,40 +128,91 @@ const faqs = [
 ];
 
 const suburbs = [
-  "New Farm",
-  "Teneriffe",
-  "Newstead",
-  "Fortitude Valley",
-  "Spring Hill",
-  "Kangaroo Point",
-  "West End",
-  "South Brisbane",
-  "Paddington",
-  "Milton",
-  "Toowong",
-  "Bardon",
-  "Ashgrove",
-  "Indooroopilly",
-  "Bulimba",
-  "Hawthorne",
-  "Balmoral",
-  "Morningside",
-  "Camp Hill",
-  "Coorparoo",
-  "Carindale",
-  "Carina",
+  "Ipswich CBD",
+  "Springfield",
+  "Springfield Lakes",
+  "Redbank",
+  "Redbank Plains",
+  "Goodna",
+  "Booval",
+  "Brassall",
+  "Karalee",
+  "Ripley",
+  "Bellbird Park",
+  "Camira",
+  "Collingwood Park",
+  "Rosewood",
+  "Augustine Heights",
+  "Brookwater",
+  "Deebing Heights",
+  "Yamanto",
+  "Raceview",
+  "Flinders View",
+  "Bundamba",
+  "Riverview",
 ];
 
 function Stars({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <span className="flex gap-0.5 text-amber-400" aria-hidden="true">
-      {Array.from({ length: 5 }, (_, i) => (
-        <svg key={i} className={className} fill="currentColor" viewBox="0 0 20 20">
+      {Array.from({ length: 5 }, (_, index) => (
+        <svg key={index} className={className} fill="currentColor" viewBox="0 0 20 20">
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       ))}
     </span>
   );
+}
+
+function ServiceIcon({ value }: { value: string }) {
+  const common = {
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.6,
+    viewBox: "0 0 24 24",
+    "aria-hidden": true,
+    className: "h-5 w-5",
+  } as const;
+
+  switch (value) {
+    case "general-clean":
+      return (
+        <svg {...common}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12 11.54 2.71a1.5 1.5 0 0 1 2.12 0l8.29 8.29m-18 0h18m-18 0V21a.75.75 0 0 0 .75.75h4.5v-5.25a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5v5.25h4.5a.75.75 0 0 0 .75-.75v-9" />
+        </svg>
+      );
+    case "deep-clean":
+      return (
+        <svg {...common}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z" />
+        </svg>
+      );
+    case "end-of-lease":
+      return (
+        <svg {...common}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+        </svg>
+      );
+    case "move-in":
+      return (
+        <svg {...common}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5 12 3l9 4.5-9 4.5-9-4.5Z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5V16.5L12 21l9-4.5V7.5M12 12v9" />
+        </svg>
+      );
+    case "airbnb":
+      return (
+        <svg {...common}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+        </svg>
+      );
+    default:
+      return (
+        <svg {...common}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18M3 12h18" />
+        </svg>
+      );
+  }
 }
 
 const faqJsonLd = {
@@ -280,6 +229,13 @@ const faqJsonLd = {
 };
 
 export default function ResidentialPage() {
+  const displayedReviews = reviews
+    .filter((review) => review.tags.includes("residential"))
+    .slice(0, 3)
+    .map((review) =>
+      review.location === "Brisbane" ? { ...review, location: undefined } : review
+    );
+
   return (
     <div>
       <script
@@ -293,14 +249,14 @@ export default function ResidentialPage() {
           <div className="lg:col-span-6">
             <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-terracotta">
               <span className="h-px w-8 bg-terracotta" />
-              Residential cleaning · Brisbane
+              Residential cleaning · Ipswich
             </p>
             <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-              House cleaning in Brisbane,{" "}
+              House cleaning in Ipswich,{" "}
               <span className="text-terracotta">done properly.</span>
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-gray-600 sm:text-lg">
-              Regular, deep, bond and one-off cleans for homes across Brisbane.
+              General, deep, bond and one-off cleans for homes across Ipswich.
               Fixed scope, insured cleaners and a price you see before you book.
             </p>
 
@@ -326,10 +282,10 @@ export default function ResidentialPage() {
                 </svg>
               </Link>
               <a
-                href="#pricing"
+                href="#services"
                 className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-6 py-3.5 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-400 hover:bg-gray-100"
               >
-                See pricing
+                See services
               </a>
             </div>
 
@@ -337,15 +293,15 @@ export default function ResidentialPage() {
               <div className="flex items-center gap-2">
                 <Stars />
                 <span className="text-sm font-semibold text-gray-900">
-                  {googleRating.stars}
+                  {siteRating.stars}
                 </span>
                 <span className="text-sm text-gray-500">
-                  from {googleRating.count} Google reviews
+                  from {siteRating.count} reviews
                 </span>
               </div>
               <span className="hidden h-4 w-px bg-gray-300 sm:block" />
               <span className="text-sm text-gray-500">
-                Police-checked &amp; fully insured
+                Police-checked & fully insured
               </span>
             </div>
           </div>
@@ -355,7 +311,7 @@ export default function ResidentialPage() {
               <div className="relative aspect-[4/3] overflow-hidden rounded-2xl sm:aspect-[16/11] lg:aspect-[4/3.4]">
                 <Image
                   src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80"
-                  alt="A Ritepro cleaner looking after a bright Brisbane home"
+                  alt="A Ritepro cleaner looking after a bright Ipswich home"
                   fill
                   priority
                   sizes="(min-width: 1024px) 50vw, 100vw"
@@ -366,18 +322,15 @@ export default function ResidentialPage() {
 
               <div className="absolute right-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-xs font-bold text-gray-900 shadow-sm backdrop-blur">
                 <span className="h-1.5 w-1.5 rounded-full bg-terracotta" />
-                {googleRating.stars} on Google
+                {siteRating.stars} rating
               </div>
 
               <div className="absolute bottom-4 left-4 right-4 rounded-xl border border-gray-200 bg-white/95 p-4 shadow-lg backdrop-blur sm:right-auto sm:w-64">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
-                  Regular cleans from
+                  Home cleans
                 </p>
                 <p className="mt-1 text-2xl font-extrabold text-gray-900">
-                  $150{" "}
-                  <span className="text-sm font-medium text-gray-400">
-                    per visit
-                  </span>
+                  Tailored per home
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-gray-500">
                   Fixed price confirmed before we start.
@@ -393,10 +346,10 @@ export default function ResidentialPage() {
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 sm:px-6 sm:grid-cols-4 lg:px-8">
           {[
             {
-              value: `${googleRating.stars} / 5`,
-              label: `${googleRating.count} Google reviews`,
+              value: `${siteRating.stars} / 5`,
+              label: `${siteRating.count} reviews`,
             },
-            { value: "500+", label: "Brisbane homes cleaned" },
+            { value: "500+", label: "Ipswich homes cleaned" },
             { value: "Fully insured", label: "Police-checked cleaners" },
             { value: "Bond-back", label: "End-of-lease guarantee" },
           ].map((item) => (
@@ -424,28 +377,28 @@ export default function ResidentialPage() {
               </h2>
             </div>
             <p className="text-sm leading-relaxed text-gray-600 lg:col-span-5">
-              Not sure which one fits? Start with a regular clean for upkeep, a
+              Not sure which one fits? Start with a general clean for upkeep, a
               deep clean for a reset, or an end-of-lease clean if you are moving
               out. We confirm the scope before you book.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {services.map((service) => (
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {residentialServices.map((service) => (
               <article
-                key={service.name}
+                key={service.value}
                 className="group relative flex flex-col rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-terracotta/30 hover:shadow-lg"
               >
-                {service.popular && (
+                {service.value === "general-clean" && (
                   <span className="absolute right-4 top-4 rounded-full bg-terracotta/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-terracotta">
                     Most booked
                   </span>
                 )}
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-terracotta/10 text-terracotta">
-                  {service.icon}
+                  <ServiceIcon value={service.value} />
                 </span>
                 <h3 className="mt-5 text-lg font-bold text-gray-900">
-                  {service.name}
+                  {service.label}
                 </h3>
                 <p className="mt-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
                   {service.tagline}
@@ -453,49 +406,7 @@ export default function ResidentialPage() {
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-gray-600">
                   {service.description}
                 </p>
-                <div className="mt-6 flex items-end justify-between border-t border-gray-100 pt-4">
-                  <div>
-                    <span className="text-xs text-gray-400">from </span>
-                    <span className="text-xl font-extrabold text-gray-900">
-                      {service.from}
-                    </span>
-                  </div>
-                  <Link
-                    href="/quote"
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-terracotta transition-colors hover:text-gray-900"
-                  >
-                    Quote
-                    <svg
-                      className="h-3.5 w-3.5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </Link>
-                </div>
               </article>
-            ))}
-          </div>
-
-          <div className="mt-6 flex flex-wrap items-center gap-2">
-            <span className="mr-1 text-xs font-semibold uppercase tracking-wider text-gray-400">
-              Also available
-            </span>
-            {alsoAvailable.map((item) => (
-              <span
-                key={item}
-                className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs text-gray-600"
-              >
-                {item}
-              </span>
             ))}
           </div>
         </div>
@@ -598,192 +509,60 @@ export default function ResidentialPage() {
         </div>
       </section>
 
-      {/* PRICING */}
-      <section id="pricing" className="scroll-mt-24 bg-gray-50 py-16 sm:py-20 lg:py-24">
+      {/* ADD-ONS + HOW WE QUOTE */}
+      <section id="add-ons" className="scroll-mt-24 bg-gray-50 py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
-            <div className="lg:col-span-7">
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-5">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-terracotta">
-                Pricing
+                Add-ons
               </p>
               <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                Clear prices. No surprises.
+                Extras, without the guesswork.
               </h2>
-            </div>
-            <p className="text-sm leading-relaxed text-gray-600 lg:col-span-5">
-              Your exact price is confirmed before we start. If your home needs
-              more time, we will tell you first — never after.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {/* Regular */}
-            <div className="flex flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-terracotta">
-                  Regular clean
-                </h3>
-                <span className="rounded-full bg-gray-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
-                  Most booked
-                </span>
-              </div>
-              <p className="mt-1 text-xs text-gray-400">
-                Weekly, fortnightly or monthly
+              <p className="mt-4 text-sm leading-relaxed text-gray-600 sm:text-base">
+                Add any of these to a visit when you request your quote. We
+                confirm the scope and price with you before booking.
               </p>
-              <div className="mt-5 space-y-3">
-                {standardPricing.map((row) => (
+              <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-5">
+                <p className="text-sm font-bold text-gray-900">
+                  How we quote
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-gray-500">
+                  Your quote is based on the service, property size, condition
+                  and any extras. No hardcoded prices — just one clear figure
+                  confirmed before we start.
+                </p>
+                <Link
+                  href="/quote"
+                  className="mt-4 inline-flex items-center gap-2 rounded-lg bg-terracotta px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-terracotta/90"
+                >
+                  Build my quote
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+
+            <div className="lg:col-span-7">
+              <div className="divide-y divide-gray-200 rounded-2xl border border-gray-200 bg-white">
+                {addons.map((addon) => (
                   <div
-                    key={row.label}
-                    className="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0 last:pb-0"
+                    key={addon.label}
+                    className="flex flex-col gap-1 px-5 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
                   >
-                    <span className="text-sm text-gray-600">{row.label}</span>
-                    <span className="text-sm font-bold text-gray-900">
-                      {row.price}
+                    <span className="text-sm font-semibold text-gray-900">
+                      {addon.label}
                     </span>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-5 flex-1 text-xs leading-relaxed text-gray-400">
-                Larger homes quoted individually. Save with a regular schedule.
-              </p>
-              <Link
-                href="/quote"
-                className="mt-5 inline-flex items-center justify-center gap-2 rounded-lg bg-terracotta px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-terracotta/90"
-              >
-                Get my price
-              </Link>
-            </div>
-
-            {/* Deep */}
-            <div className="flex flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-terracotta">
-                Deep clean
-              </h3>
-              <p className="mt-1 text-xs text-gray-400">One-off, any home size</p>
-              <p className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900">
-                $280 – $550
-              </p>
-              <ul className="mt-5 space-y-2.5 text-sm text-gray-600">
-                {[
-                  "Top-to-bottom reset",
-                  "Built-up areas and grout",
-                  "Vents, sills and skirting",
-                  "Add-ons available",
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-2.5">
-                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-terracotta" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-5 flex-1 text-xs leading-relaxed text-gray-400">
-                Ideal before a regular schedule or after a long gap between
-                cleans.
-              </p>
-              <Link
-                href="/quote"
-                className="mt-5 inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-400 hover:bg-gray-50"
-              >
-                Get my price
-              </Link>
-            </div>
-
-            {/* End of lease */}
-            <div className="flex flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-terracotta">
-                End-of-lease
-              </h3>
-              <p className="mt-1 text-xs text-gray-400">Bond-back guaranteed</p>
-              <div className="mt-5 space-y-3">
-                {eolPricing.map((row) => (
-                  <div
-                    key={row.label}
-                    className="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0 last:pb-0"
-                  >
-                    <span className="text-sm text-gray-600">{row.label}</span>
-                    <span className="text-sm font-bold text-gray-900">
-                      {row.price}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-5 flex-1 text-xs leading-relaxed text-gray-400">
-                Other sizes quoted individually. Checklist built around the exit
-                report.
-              </p>
-              <Link
-                href="/quote"
-                className="mt-5 inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-400 hover:bg-gray-50"
-              >
-                Get my price
-              </Link>
-            </div>
-          </div>
-
-          {/* Recurring callout */}
-          <div className="mt-4 overflow-hidden rounded-2xl bg-black p-6 text-white sm:p-8">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-terracotta-light">
-                  Keep it that way
-                </p>
-                <h3 className="mt-2 text-xl font-bold sm:text-2xl">
-                  Save with a regular visit.
-                </h3>
-                <p className="mt-2 max-w-md text-sm leading-relaxed text-gray-400">
-                  A consistent schedule keeps your home at the same standard —
-                  and costs less than booking one-off cleans.
-                </p>
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                {recurringPricing.map((item) => (
-                  <div
-                    key={item.freq}
-                    className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center"
-                  >
-                    <p className="text-[11px] font-medium uppercase tracking-wider text-gray-400">
-                      {item.freq}
-                    </p>
-                    <p className="mt-1 text-sm font-bold text-white">
-                      {item.price}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Add-ons */}
-          <div className="mt-4 rounded-2xl border border-gray-200 bg-white p-6 sm:p-8">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900">
-                  Add-ons
-                </h3>
-                <p className="mt-1 text-xs text-gray-500">
-                  Add any of these to a visit when you book.
-                </p>
-              </div>
-              <div className="grid flex-1 gap-x-8 gap-y-2 text-sm sm:grid-cols-2 lg:grid-cols-3 lg:pl-10">
-                {addonPricing.map((row) => (
-                  <div
-                    key={row.label}
-                    className="flex items-center justify-between gap-4"
-                  >
-                    <span className="text-gray-600">{row.label}</span>
-                    <span className="font-semibold text-gray-900">
-                      {row.price}
+                    <span className="text-sm leading-relaxed text-gray-500 sm:max-w-xs sm:text-right">
+                      {addon.desc}
                     </span>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-
-          <p className="mt-4 text-xs leading-relaxed text-gray-400">
-            Prices are guides. Your address, condition and extras are confirmed
-            in the quote before booking.
-          </p>
         </div>
       </section>
 
@@ -835,15 +614,15 @@ export default function ResidentialPage() {
                 Reviews
               </p>
               <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                Brisbane homes, real results.
+                Ipswich homes, real results.
               </h2>
               <div className="mt-4 flex items-center gap-2">
                 <Stars />
                 <span className="text-sm font-semibold text-gray-900">
-                  {googleRating.stars}
+                  {siteRating.stars}
                 </span>
                 <span className="text-sm text-gray-500">
-                  from {googleRating.count} Google reviews
+                  from {siteRating.count} reviews
                 </span>
               </div>
             </div>
@@ -870,12 +649,9 @@ export default function ResidentialPage() {
           </div>
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {reviews
-              .filter((review) => review.tags.includes("residential"))
-              .slice(0, 3)
-              .map((review) => (
-                <ReviewCard key={review.id} review={review} />
-              ))}
+            {displayedReviews.map((review) => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
           </div>
         </div>
       </section>
@@ -978,10 +754,10 @@ export default function ResidentialPage() {
                 Service area
               </p>
               <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
-                Across Brisbane and the surrounding suburbs.
+                Across Ipswich and the surrounding suburbs.
               </h2>
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-gray-400 sm:text-base">
-                From the inner city to the north, south, east and bayside
+                From Ipswich CBD to Springfield, Ripley and the surrounding
                 suburbs. Not listed? Ask us — we will confirm availability when
                 you request your quote.
               </p>
@@ -1003,14 +779,14 @@ export default function ResidentialPage() {
                   Ready for a cleaner home?
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-gray-400">
-                  Get your fixed quote in about 60 seconds. No waiting, no
+                  Request your quote in about 60 seconds. No waiting, no
                   obligation.
                 </p>
                 <Link
                   href="/quote"
                   className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-terracotta px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-terracotta/90"
                 >
-                  Free instant quote
+                  Get a free quote
                   <svg
                     className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
                     fill="none"

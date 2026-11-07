@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { googleRating } from "@/data/reviews";
+import { siteRating } from "@/data/reviews";
 
 export default function Footer() {
   return (
@@ -93,7 +93,7 @@ export default function Footer() {
                     </svg>
                   ))}
                 </div>
-                <span className="text-gray-400"><strong className="text-white">{googleRating.stars}</strong> &middot; {googleRating.count} reviews</span>
+                <span className="text-gray-400"><strong className="text-white">{siteRating.stars}</strong> &middot; {siteRating.count} reviews</span>
               </div>
             </div>
           </div>

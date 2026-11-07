@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { InlineTestimonial } from "@/components/ReviewCard";
 import { ReviewCarousel } from "@/components/ReviewCarousel";
-import { featuredReviews, reviews, reviewStats, googleRating } from "@/data/reviews";
+import { featuredReviews, reviews, siteRating } from "@/data/reviews";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const topServices = [
   { num: "01", title: "Regular Residential Cleaning", desc: "Weekly, fortnightly or monthly home cleans tailored to your routine. From $150." },
-  { num: "02", title: "Commercial Cleaning", desc: "Professional commercial cleaning for offices and workspaces. From $600 per visit." },
+  { num: "02", title: "Commercial Cleaning", desc: "Professional commercial cleaning for offices and workspaces." },
   { num: "03", title: "Airbnb Cleaning", desc: "Turnover cleans between guests. From $220 per clean." },
   { num: "04", title: "End-of-Lease Cleaning", desc: "Legally required bond cleaning. $450–$700 per job." },
   { num: "05", title: "NDIS Cleaning", desc: "Specialist cleaning for NDIS participants and support environments. From $180." },
@@ -70,12 +70,6 @@ const pricingCategories = [
   },
 ];
 
-const recurringCallout = [
-  { freq: "Weekly", price: "from $149" },
-  { freq: "Fortnightly", price: "from $159" },
-  { freq: "Monthly", price: "from $169" },
-];
-
 export default function HomePage() {
   return (
     <div>
@@ -115,7 +109,7 @@ export default function HomePage() {
                   href="/quote"
                   className="inline-flex items-center gap-2 bg-white text-black px-8 py-3.5 rounded text-sm font-bold hover:bg-gray-100 transition-colors"
                 >
-                  Free instant quote
+                  Get a free quote
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                 </Link>
                 <Link
@@ -132,8 +126,8 @@ export default function HomePage() {
                 <div className="text-sm text-white/50 mt-0.5">Happy Customers</div>
               </div>
               <div className="bg-black/60 backdrop-blur-sm border border-white/10 rounded-xl px-6 py-5 text-center">
-                <div className="text-3xl font-black text-white">4.9</div>
-                <div className="text-sm text-white/50 mt-0.5">Google Rating</div>
+                <div className="text-3xl font-black text-white">{siteRating.stars}</div>
+                <div className="text-sm text-white/50 mt-0.5">Overall Rating</div>
               </div>
             </div>
           </div>
@@ -212,9 +206,9 @@ export default function HomePage() {
           </div>
 
           {/* Stats summary */}
-          <div className="flex items-center justify-center gap-8 sm:gap-12 mb-10">
+          <div className="mb-10 flex items-center justify-center">
             <div className="text-center">
-              <p className="text-3xl font-black text-black">{reviewStats.average}</p>
+              <p className="text-3xl font-black text-black">{siteRating.stars}</p>
               <div className="flex justify-center gap-0.5 mt-1">
                 {Array.from({ length: 5 }, (_, i) => (
                   <svg key={i} className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
@@ -222,19 +216,7 @@ export default function HomePage() {
                   </svg>
                 ))}
               </div>
-              <p className="text-xs text-gray-400 mt-0.5">Verified reviews</p>
-            </div>
-            <div className="hidden sm:block w-px h-12 bg-gray-200" />
-            <div className="text-center">
-              <p className="text-3xl font-black text-black">{googleRating.stars}</p>
-              <div className="flex justify-center gap-0.5 mt-1">
-                {Array.from({ length: 5 }, (_, i) => (
-                  <svg key={i} className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="text-xs text-gray-400 mt-0.5">Google</p>
+              <p className="text-xs text-gray-400 mt-0.5">Overall rating</p>
             </div>
           </div>
 
@@ -263,7 +245,7 @@ export default function HomePage() {
             </h2>
             <div className="w-12 h-0.5 bg-white/30 mx-auto mt-4" />
             <p className="mt-4 text-gray-400 text-sm max-w-xl mx-auto">
-              Prices start from $150 — get your exact quote in 60 seconds.
+              Prices start from $150 — request your free quote in 60 seconds.
             </p>
           </div>
 
@@ -293,7 +275,7 @@ export default function HomePage() {
               href="/quote"
               className="inline-block bg-white text-black px-8 py-3 rounded text-sm font-bold hover:bg-gray-100 transition-colors"
             >
-              Free instant quote
+              Get a free quote
             </Link>
           </div>
         </div>
@@ -311,7 +293,7 @@ export default function HomePage() {
                 </svg>
               ))}
             </div>
-            <span className="text-gray-400">Rated {googleRating.stars} on Google</span>
+            <span className="text-gray-400">Rated {siteRating.stars} from {siteRating.count} reviews</span>
           </div>
         </div>
       </section>
@@ -323,13 +305,13 @@ export default function HomePage() {
             Ready for a Cleaner Space?
           </h2>
           <p className="mt-4 text-gray-500 text-lg">
-            Get your instant quote in 60 seconds — no waiting, no obligation.
+            Get your free quote — no waiting, no obligation.
           </p>
           <Link
             href="/quote"
             className="mt-8 inline-block bg-black text-white px-10 py-4 rounded text-sm font-bold hover:bg-gray-800 transition-colors"
           >
-            Free instant quote
+            Get a free quote
           </Link>
         </div>
       </section>
