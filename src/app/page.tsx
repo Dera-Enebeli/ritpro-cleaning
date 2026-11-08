@@ -9,16 +9,16 @@ export const metadata: Metadata = {
 };
 
 const topServices = [
-  { num: "01", title: "Regular Residential Cleaning", desc: "Weekly, fortnightly or monthly home cleans tailored to your routine. From $150." },
+  { num: "01", title: "Regular Residential Cleaning", desc: "Weekly, fortnightly or monthly home cleans tailored to your routine." },
   { num: "02", title: "Commercial Cleaning", desc: "Professional commercial cleaning for offices and workspaces." },
-  { num: "03", title: "Airbnb Cleaning", desc: "Turnover cleans between guests. From $220 per clean." },
-  { num: "04", title: "End-of-Lease Cleaning", desc: "Legally required bond cleaning. $450–$700 per job." },
-  { num: "05", title: "NDIS Cleaning", desc: "Specialist cleaning for NDIS participants and support environments. From $180." },
-  { num: "06", title: "Carpet Cleaning", desc: "Deep steam cleaning for fresh, stain-free carpets. From $170." },
-  { num: "07", title: "Pressure Washing", desc: "Exterior cleaning for driveways, patios and pathways. From $550." },
-  { num: "08", title: "Window Cleaning", desc: "Streak-free interior and exterior window cleaning. From $320." },
-  { num: "09", title: "Builders' Cleans", desc: "Post-construction removal of dust, debris and residue. From $900." },
-  { num: "10", title: "Body Corporate Cleaning", desc: "Common area maintenance for apartment blocks and estates. From $800 per month." },
+  { num: "03", title: "Airbnb Cleaning", desc: "Turnover cleans between guests, ready for the next check-in." },
+  { num: "04", title: "End-of-Lease Cleaning", desc: "Checklist-driven bond cleaning built around the exit report." },
+  { num: "05", title: "NDIS Cleaning", desc: "Specialist cleaning for NDIS participants and support environments." },
+  { num: "06", title: "Carpet Cleaning", desc: "Deep steam cleaning for fresh, stain-free carpets." },
+  { num: "07", title: "Pressure Washing", desc: "Exterior cleaning for driveways, patios and pathways." },
+  { num: "08", title: "Window Cleaning", desc: "Streak-free interior and exterior window cleaning." },
+  { num: "09", title: "Builders' Cleans", desc: "Post-construction removal of dust, debris and residue." },
+  { num: "10", title: "Body Corporate Cleaning", desc: "Common area maintenance for apartment blocks and estates." },
 ];
 
 const trustPoints = [
@@ -33,40 +33,6 @@ const trustPoints = [
   {
     title: "Satisfaction Guaranteed",
     desc: "If it's not right, we'll make it right. No questions asked.",
-  },
-];
-
-const pricingCategories = [
-  {
-    title: "Standard Clean",
-    rows: [
-      { label: "1 Bed / 1 Bath", price: "$150" },
-      { label: "2 Bed / 1 Bath", price: "$210" },
-      { label: "3 Bed / 2 Bath", price: "$290" },
-    ],
-  },
-  {
-    title: "Deep Clean",
-    rows: [
-      { label: "Any home size", price: "$280 – $550" },
-    ],
-  },
-  {
-    title: "End of Lease",
-    rows: [
-      { label: "2 Bedroom", price: "$450" },
-      { label: "3 Bedroom", price: "$700" },
-    ],
-  },
-  {
-    title: "Add-On Services",
-    rows: [
-      { label: "Carpet Cleaning (3 rooms)", price: "$170" },
-      { label: "Oven Cleaning", price: "$150" },
-      { label: "Window Cleaning (House)", price: "$320" },
-      { label: "Pressure Washing", price: "$550" },
-      { label: "Airbnb Turnover", price: "$220" },
-    ],
   },
 ];
 
@@ -245,32 +211,11 @@ export default function HomePage() {
             </h2>
             <div className="w-12 h-0.5 bg-white/30 mx-auto mt-4" />
             <p className="mt-4 text-gray-400 text-sm max-w-xl mx-auto">
-              Prices start from $150 — request your free quote in 60 seconds.
+              Prices start from $150 — request your free quote.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {pricingCategories.map((cat) => (
-              <div
-                key={cat.title}
-                className="bg-white/5 border border-gray-800 rounded-xl p-6"
-              >
-                <h3 className="text-sm font-bold text-gray-300 uppercase tracking-wider mb-4">
-                  {cat.title}
-                </h3>
-                <div className="space-y-3">
-                  {cat.rows.map((row) => (
-                    <div key={row.label} className="flex justify-between items-center">
-                      <span className="text-sm text-gray-400">{row.label}</span>
-                      <span className="text-sm font-bold text-white">{row.price}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-8">
+          <div className="text-center">
             <Link
               href="/quote"
               className="inline-block bg-white text-black px-8 py-3 rounded text-sm font-bold hover:bg-gray-100 transition-colors"

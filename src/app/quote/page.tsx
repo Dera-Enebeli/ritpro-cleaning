@@ -9,10 +9,15 @@ import type { ServiceCategory } from "@/data/services";
 type Step = 0 | 1 | 2;
 const stepLabels = ["Service & Property", "Schedule & Extras", "Details & Quote"];
 
-type PropertyType = "House" | "Apartment" | "Townhouse";
+type PropertyType = "House" | "Apartment" | "Townhouse" | "Other";
 type Frequency = "One-off" | "Weekly" | "Fortnightly" | "Monthly";
 
-const propertyTypes: PropertyType[] = ["House", "Apartment", "Townhouse"];
+const propertyTypes: PropertyType[] = [
+  "House",
+  "Apartment",
+  "Townhouse",
+  "Other",
+];
 const bedroomOptions = [1, 2, 3, 4, 5, 6, 7];
 const bathroomOptions = [1, 2, 3, 4, 5];
 const MAX_BEDROOMS = 7;
@@ -308,8 +313,46 @@ export default function QuotePage() {
       ? `${category} — ${selectedService.label}`
       : "Not selected";
 
+  const mailtoHref = `mailto:riteprocleaningservices@gmail.com?subject=${encodeURIComponent(
+    `Quote request — ${name.trim() || "Website enquiry"}`
+  )}&body=${encodeURIComponent(
+    [
+      `Name: ${name.trim() || "N/A"}`,
+      `Email: ${email.trim() || "N/A"}`,
+      `Phone: ${phone.trim() || "N/A"}`,
+      `Service: ${serviceLabel}`,
+      isResidential
+        ? `Property: ${propertyType || "N/A"} · ${formatCount(bedrooms, MAX_BEDROOMS, "bedroom", "bedrooms")} / ${formatCount(bathrooms, MAX_BATHROOMS, "bathroom", "bathrooms")}`
+        : `Floor area: ${floorArea || "N/A"}`,
+      `Frequency: ${frequency}`,
+      `Extras: ${activeExtras.join(", ") || "None"}`,
+      `Postcode: ${postcode || "N/A"}`,
+      `When needed: ${whenNeeded || "N/A"}`,
+      `Notes: ${notes || "None"}`,
+    ].join("\n")
+  )}`;
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (sending) return;
+
+    const cleanName = name.trim();
+    const cleanEmail = email.trim();
+    const cleanPhone = phone.trim();
+
+    if (!cleanName || !cleanEmail || !cleanPhone) {
+      setError("Please fill in your name, email and phone number.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(cleanEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (!category || !serviceValue) {
+      setError("Please go back and choose your service before submitting.");
+      return;
+    }
+
     setSending(true);
     setError("");
 
@@ -332,9 +375,9 @@ export default function QuotePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name,
-          email,
-          phone,
+          name: cleanName,
+          email: cleanEmail,
+          phone: cleanPhone,
           service: serviceLabel,
           message: details,
         }),
@@ -364,10 +407,14 @@ export default function QuotePage() {
           <div className="space-y-8">
             <div>
               <h2 className="text-xl font-bold text-black mb-2">
-                What cleaning do you need?
+                {isResidential
+                  ? "What type of residential clean do you need?"
+                  : category === "Commercial"
+                    ? "What type of commercial clean do you need?"
+                    : "What type of clean do you need?"}
               </h2>
               <p className="text-sm text-gray-500">
-                Choose the type of clean you need and tell us about the space.
+                Choose the service and tell us about the space.
               </p>
             </div>
 
@@ -391,7 +438,7 @@ export default function QuotePage() {
 
             <div>
               <label htmlFor="service-option" className={labelClass}>
-                What do you need cleaned?
+                Service
               </label>
               <Dropdown
                 id="service-option"
@@ -736,7 +783,15 @@ export default function QuotePage() {
             <InlineTestimonial review={reviews.find((review) => review.id === "r9")!} />
 
             {error && (
-              <p className="text-red-500 text-sm text-center">{error}</p>
+              <div className="rounded-xl border border-red-100 bg-red-50 p-5 text-center">
+                <p className="text-sm text-red-600">{error}</p>
+                <a
+                  href={mailtoHref}
+                  className="mt-3 inline-block text-sm font-bold text-black underline underline-offset-4 hover:text-terracotta"
+                >
+                  Email us your details instead
+                </a>
+              </div>
             )}
 
             <button
@@ -834,6 +889,7 @@ export default function QuotePage() {
           {stepContent()}
           <div className="flex justify-between mt-8">
             <button
+              type="button"
               onClick={prevStep}
               className={`px-6 py-3 rounded-xl text-sm font-semibold transition-colors ${
                 step === 0 ? "invisible" : "text-gray-600 hover:bg-gray-100"
@@ -843,6 +899,7 @@ export default function QuotePage() {
             </button>
             {step < 2 && (
               <button
+                type="button"
                 onClick={nextStep}
                 disabled={!canProceed()}
                 className="px-8 py-3 bg-black text-white rounded-xl text-sm font-extrabold hover:bg-gray-800 transition-colors disabled:opacity-40"
