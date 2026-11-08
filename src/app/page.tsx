@@ -9,16 +9,16 @@ export const metadata: Metadata = {
 };
 
 const topServices = [
-  { num: "01", title: "Regular Residential Cleaning", desc: "Weekly, fortnightly or monthly home cleans tailored to your routine." },
-  { num: "02", title: "Commercial Cleaning", desc: "Professional commercial cleaning for offices and workspaces." },
-  { num: "03", title: "Airbnb Cleaning", desc: "Turnover cleans between guests, ready for the next check-in." },
-  { num: "04", title: "End-of-Lease Cleaning", desc: "Checklist-driven bond cleaning built around the exit report." },
-  { num: "05", title: "NDIS Cleaning", desc: "Specialist cleaning for NDIS participants and support environments." },
-  { num: "06", title: "Carpet Cleaning", desc: "Deep steam cleaning for fresh, stain-free carpets." },
-  { num: "07", title: "Pressure Washing", desc: "Exterior cleaning for driveways, patios and pathways." },
-  { num: "08", title: "Window Cleaning", desc: "Streak-free interior and exterior window cleaning." },
-  { num: "09", title: "Builders' Cleans", desc: "Post-construction removal of dust, debris and residue." },
-  { num: "10", title: "Body Corporate Cleaning", desc: "Common area maintenance for apartment blocks and estates." },
+  { num: "01", title: "General Home Cleaning", desc: "Weekly, fortnightly or monthly cleans tailored to how you live." },
+  { num: "02", title: "Deep Clean", desc: "A top-to-bottom reset for built-up dust, grout, appliances and the areas a routine clean misses." },
+  { num: "03", title: "End of Lease & Move-in Cleaning", desc: "Checklist-driven move-out cleans with a bond-back guarantee, plus move-in cleans before you unpack." },
+  { num: "04", title: "Airbnb & Short-Term Rental", desc: "Fast, guest-ready turnovers between bookings, including linen and presentation." },
+  { num: "05", title: "NDIS & Provider Cleaning", desc: "Compliant NDIS, CHSP, MyAgedCare and community care cleaning with police-checked staff." },
+  { num: "06", title: "Office & Commercial Cleaning", desc: "Scheduled office and co-working cleans with checklists and service reports." },
+  { num: "07", title: "Medical Centre Cleaning", desc: "Infection-control cleaning for clinics and medical centres, delivered around patient hours." },
+  { num: "08", title: "Hospitality, Retail & Gym Cleaning", desc: "After-hours cleans for shops, cafés, restaurants and fitness spaces." },
+  { num: "09", title: "Warehouse & Industrial Cleaning", desc: "Large-footprint cleans with the right equipment and OHS protocols." },
+  { num: "10", title: "Body Corporate & Specialist Sites", desc: "Strata common areas, schools, post-construction and other specialist sites, scoped individually." },
 ];
 
 const trustPoints = [
