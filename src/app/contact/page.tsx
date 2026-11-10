@@ -14,8 +14,8 @@ const fieldClass =
 const contactDetails = [
   {
     label: "Head office",
-    value: "Brisbane, Queensland 4000",
-    href: undefined,
+    value: "Ipswich, Queensland 4305",
+    href: "https://www.google.com/maps/search/?api=1&query=Ipswich+QLD+4305",
     icon: (
       <svg
         className="h-5 w-5"
@@ -189,7 +189,7 @@ export default function ContactPage() {
             <div className="lg:col-span-8">
               <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-terracotta-light">
                 <span className="h-px w-8 bg-terracotta" />
-                Ritepro Cleaning · Brisbane
+                Ritepro Cleaning · Ipswich
               </p>
               <h1 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
                 Get in touch with{" "}
@@ -203,7 +203,7 @@ export default function ContactPage() {
             </div>
 
             <div className="flex flex-wrap gap-2 lg:col-span-4 lg:justify-end">
-              {["Replies in 1–2 hours", "Fully insured", "Brisbane local"].map(
+              {["Replies in 1–2 hours", "Fully insured", "Ipswich local"].map(
                 (item) => (
                   <span
                     key={item}
@@ -251,6 +251,8 @@ export default function ContactPage() {
                     <a
                       key={item.label}
                       href={item.href}
+                      target={item.href.startsWith("http") ? "_blank" : undefined}
+                      rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
                       className="group flex items-start gap-4 rounded-xl p-4 transition-colors hover:bg-gray-50"
                     >
                       {content}
@@ -304,7 +306,7 @@ export default function ContactPage() {
                   Talk to a real person.
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-gray-400">
-                  Our Brisbane team is available during business hours for
+                  Our Ipswich team is available during business hours for
                   urgent cleaning requests.
                 </p>
                 <div className="mt-5 flex flex-col gap-2 sm:flex-row">

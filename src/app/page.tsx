@@ -57,7 +57,7 @@ export default function HomePage() {
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 mb-6 bg-black/60 backdrop-blur-sm border border-white/10 rounded-full px-4 py-1.5 text-sm text-white/70">
                 <span className="w-2 h-2 rounded-full bg-terracotta animate-pulse" />
-                Trusted across Brisbane since 2019
+                Trusted across Ipswich since 2019
               </div>
               <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[0.9] tracking-tight">
                 Clean
@@ -67,7 +67,7 @@ export default function HomePage() {
                 <span className="text-white/90">Clear Minds.</span>
               </h1>
               <p className="mt-6 text-lg sm:text-xl text-gray-300 max-w-xl leading-relaxed">
-                 Professional cleaning services for homes and businesses across Brisbane.
+                 Professional cleaning services for homes and businesses across Ipswich, QLD 4305.
                  Reliable, insured, and built to the highest standard.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">

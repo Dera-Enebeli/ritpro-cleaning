@@ -64,8 +64,9 @@ export default function ReviewsPage() {
                 Customer Reviews
               </h1>
               <p className="mt-3 text-lg text-gray-300">
-                Real feedback from real customers across Brisbane. Every review
-                is from an actual booking through Ritepro.
+                Real feedback from real customers across Ipswich and South East
+                Queensland. Every review is from an actual booking through
+                Ritepro.
               </p>
             </div>
 

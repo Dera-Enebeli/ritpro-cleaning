@@ -6,11 +6,11 @@ export const metadata: Metadata = {
   title: "About Ritepro Cleaning",
   alternates: { canonical: "/about" },
   description:
-    "Learn about Ritepro Cleaning Services — Brisbane's trusted cleaning company. Founded to deliver reliable, professional cleaning for homes and businesses across Brisbane.",
+    "Learn about Ritepro Cleaning Services — Ipswich's trusted cleaning company. Founded to deliver reliable, professional cleaning for homes and businesses across Ipswich, QLD 4305.",
   openGraph: {
-    title: "About Ritepro Cleaning Brisbane | Our Story",
+    title: "About Ritepro Cleaning Ipswich | Our Story",
     description:
-      "Learn about Ritepro Cleaning Services — Brisbane's trusted cleaning company. Founded to deliver reliable, professional cleaning for homes and businesses across Brisbane.",
+      "Learn about Ritepro Cleaning Services — Ipswich's trusted cleaning company. Founded to deliver reliable, professional cleaning for homes and businesses across Ipswich, QLD 4305.",
   },
 };
 
@@ -38,7 +38,7 @@ export default function AboutPage() {
       <section className="relative h-[40vh] min-h-[300px] flex items-center">
         <Image
           src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&q=80"
-          alt="Ritepro cleaning team servicing a Brisbane home"
+          alt="Ritepro cleaning team servicing an Ipswich home"
           fill
           className="object-cover"
           priority
@@ -72,14 +72,14 @@ export default function AboutPage() {
               </p>
               <p className="text-gray-600 leading-relaxed mt-4">
                 Today, we serve residential clients, businesses, and public
-                buildings across Brisbane. Every team is insured, vetted, and
-                trained to our exacting standards.
+                buildings across Ipswich, QLD 4305. Every team is insured,
+                vetted, and trained to our exacting standards.
               </p>
             </div>
             <div className="relative h-[400px] rounded-lg overflow-hidden">
               <Image
                 src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80"
-                alt="Professionally cleaned home in Brisbane by Ritepro Cleaning"
+                alt="Professionally cleaned home in Ipswich by Ritepro Cleaning"
                 fill
                 className="object-cover"
               />

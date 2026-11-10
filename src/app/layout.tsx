@@ -13,11 +13,11 @@ const siteUrl = "https://riteprocleaning.com.au";
 
 export const metadata: Metadata = {
   title: {
-    default: "Ritepro Cleaning Brisbane | Professional Cleaning Services",
+    default: "Ritepro Cleaning Ipswich | Professional Cleaning Services",
     template: "%s | Ritepro Cleaning",
   },
   description:
-    "Professional residential and commercial cleaning services in Brisbane. Reliable, insured, and satisfaction guaranteed. Get a free quote in 60 seconds.",
+    "Professional residential and commercial cleaning services in Ipswich, QLD 4305. Reliable, insured, and satisfaction guaranteed. Get a free quote.",
   metadataBase: new URL(siteUrl),
   // No canonical here on purpose. Metadata is inherited parent -> child, so
   // a canonical set in the root layout would be applied to every route and
@@ -35,17 +35,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_AU",
-    siteName: "Ritepro Cleaning Brisbane",
-    title: "Ritepro Cleaning Brisbane | Professional Cleaning Services",
+    siteName: "Ritepro Cleaning Ipswich",
+    title: "Ritepro Cleaning Ipswich | Professional Cleaning Services",
     description:
-      "Professional residential and commercial cleaning services in Brisbane. Reliable, insured, and satisfaction guaranteed.",
+      "Professional residential and commercial cleaning services in Ipswich, QLD 4305. Reliable, insured, and satisfaction guaranteed.",
     url: siteUrl,
     images: [
       {
         url: "/logo.jpg",
         width: 1080,
         height: 1080,
-        alt: "Ritepro Cleaning Services Brisbane",
+        alt: "Ritepro Cleaning Services Ipswich",
       },
     ],
   },
@@ -75,11 +75,23 @@ export default function RootLayout({
               email: "riteprocleaningservices@gmail.com",
               address: {
                 "@type": "PostalAddress",
-                addressLocality: "Brisbane",
+                addressLocality: "Ipswich",
                 addressRegion: "QLD",
+                postalCode: "4305",
                 addressCountry: "AU",
               },
-              areaServed: ["Brisbane", "Ipswich"],
+              areaServed: [
+                "Ipswich",
+                "Springfield",
+                "Redbank",
+                "Goodna",
+                "Booval",
+                "Bundamba",
+                "Bellbird Park",
+                "Ripley",
+              ],
+              hasMap:
+                "https://www.google.com/maps/search/?api=1&query=Ipswich+QLD+4305",
               aggregateRating: {
                 "@type": "AggregateRating",
                 ratingValue: "4.5",

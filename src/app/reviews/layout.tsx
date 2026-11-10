@@ -4,11 +4,11 @@ export const metadata: Metadata = {
   title: "Customer Reviews",
   alternates: { canonical: "/reviews" },
   description:
-    "Read real reviews from Brisbane customers. Rated 4.5 out of 5 stars from verified reviews for residential and commercial cleaning.",
+    "Read real reviews from Ipswich customers. Rated 4.5 out of 5 stars from verified reviews for residential and commercial cleaning.",
   openGraph: {
-    title: "Ritepro Cleaning Reviews | Brisbane Customer Feedback",
+    title: "Ritepro Cleaning Reviews | Ipswich Customer Feedback",
     description:
-      "Read real reviews from Brisbane customers. Rated 4.5 out of 5 stars from verified reviews for residential and commercial cleaning.",
+      "Read real reviews from Ipswich customers. Rated 4.5 out of 5 stars from verified reviews for residential and commercial cleaning.",
   },
 };
 

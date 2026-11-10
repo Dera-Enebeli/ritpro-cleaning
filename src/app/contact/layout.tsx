@@ -4,11 +4,11 @@ export const metadata: Metadata = {
   title: "Contact Us",
   alternates: { canonical: "/contact" },
   description:
-    "Get in touch with Ritepro Cleaning Brisbane. Call +61 434 139 623, email, or WhatsApp. Get a free cleaning quote — we reply within 24 hours.",
+    "Get in touch with Ritepro Cleaning Ipswich. Call +61 434 139 623, email, or WhatsApp. Get a free cleaning quote — we reply within 24 hours.",
   openGraph: {
-    title: "Contact Ritepro Cleaning Brisbane | Free Quote",
+    title: "Contact Ritepro Cleaning Ipswich | Free Quote",
     description:
-      "Get in touch with Ritepro Cleaning Brisbane. Call +61 434 139 623, email, or WhatsApp. Get a free cleaning quote — we reply within 24 hours.",
+      "Get in touch with Ritepro Cleaning Ipswich. Call +61 434 139 623, email, or WhatsApp. Get a free cleaning quote — we reply within 24 hours.",
   },
 };
 

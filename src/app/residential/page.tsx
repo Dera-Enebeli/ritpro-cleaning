@@ -231,10 +231,7 @@ const faqJsonLd = {
 export default function ResidentialPage() {
   const displayedReviews = reviews
     .filter((review) => review.tags.includes("residential"))
-    .slice(0, 3)
-    .map((review) =>
-      review.location === "Brisbane" ? { ...review, location: undefined } : review
-    );
+    .slice(0, 3);
 
   return (
     <div>

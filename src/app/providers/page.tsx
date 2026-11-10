@@ -5,14 +5,14 @@ import { ReviewCard } from "@/components/ReviewCard";
 import { reviews } from "@/data/reviews";
 
 export const metadata: Metadata = {
-  title: "NDIS & Provider Cleaning Brisbane",
+  title: "NDIS & Provider Cleaning Ipswich",
   alternates: { canonical: "/providers" },
   description:
-    "Compliant NDIS, CHSP, MyAgedCare, and community care cleaning services across Brisbane. Police-checked staff, incident reporting, and full documentation.",
+    "Compliant NDIS, CHSP, MyAgedCare, and community care cleaning services across Ipswich, QLD 4305. Police-checked staff, incident reporting, and full documentation.",
   openGraph: {
-    title: "NDIS Cleaning Brisbane | Provider Cleaning Services",
+    title: "NDIS Cleaning Ipswich | Provider Cleaning Services",
     description:
-      "Compliant NDIS, CHSP, MyAgedCare, and community care cleaning services across Brisbane. Police-checked staff, incident reporting, and full documentation.",
+      "Compliant NDIS, CHSP, MyAgedCare, and community care cleaning services across Ipswich, QLD 4305. Police-checked staff, incident reporting, and full documentation.",
   },
 };
 
@@ -65,7 +65,7 @@ export default function ProvidersPage() {
       <section className="relative h-[40vh] min-h-[300px] flex items-center">
         <Image
           src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&q=80"
-          alt="NDIS and provider cleaning services in Brisbane — Ritepro team supporting participants"
+          alt="NDIS and provider cleaning services in Ipswich — Ritepro team supporting participants"
           fill
           className="object-cover"
           priority
@@ -77,7 +77,7 @@ export default function ProvidersPage() {
           </h1>
           <p className="mt-3 text-lg text-gray-200 max-w-xl">
             Reliable, compliant service delivery for NDIS, CHSP, and community
-            care programs across Brisbane.
+            care programs across Ipswich, QLD 4305.
           </p>
           <div className="mt-6">
             <Link

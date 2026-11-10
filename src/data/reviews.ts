@@ -11,7 +11,7 @@ export const reviews: Review[] = [
   {
     id: "r1",
     name: "Sarah M.",
-    location: "Brisbane",
+    location: "Ipswich",
     rating: 5,
     content:
       "Booked through the website and had a fantastic cleaner assigned within 24 hours. The whole process was seamless from quote to clean. Our regular fortnightly cleaner is always punctual and thorough — Ritepro makes it so easy.",
@@ -46,7 +46,7 @@ export const reviews: Review[] = [
   {
     id: "r5",
     name: "David P.",
-    location: "Brisbane",
+    location: "Ipswich",
     rating: 5,
     content:
       "Had Ritepro in for a deep clean before selling our home. They transformed the place — even the grout in the tiles looked new. The real estate agent commented on how spotless everything was. Highly recommended.",
@@ -97,7 +97,7 @@ export const reviews: Review[] = [
   {
     id: "r11",
     name: "Anita D.",
-    location: "Brisbane",
+    location: "Ipswich",
     rating: 5,
     content:
       "Booked a pressure washing service through the website — the whole process took about two minutes. Our driveway and patio look brand new. The team arrived on time, worked hard all morning, and cleaned up after themselves. Brilliant.",
@@ -158,7 +158,7 @@ export const reviews: Review[] = [
   {
     id: "r18",
     name: "Fiona K.",
-    location: "Brisbane",
+    location: "Ipswich",
     rating: 5,
     content:
       "I've been with Ritepro for nearly two years now. Same cleaner every fortnight, same high standard every time. When I had to reschedule last minute, they sorted it without any fuss. That kind of reliability is hard to find.",
@@ -185,7 +185,7 @@ export const reviews: Review[] = [
   {
     id: "r21",
     name: "Angela P.",
-    location: "Brisbane",
+    location: "Ipswich",
     rating: 5,
     content:
       "Absolutely love my fortnightly clean. My cleaner is thorough, friendly, and always goes the extra mile. The online booking is so easy to manage and reschedule when I need to.",
@@ -211,7 +211,7 @@ export const reviews: Review[] = [
   {
     id: "r24",
     name: "Peter J.",
-    location: "Brisbane",
+    location: "Ipswich",
     rating: 4,
     content:
       "Booked a deep clean through the website. The team arrived on time, worked for hours, and left the house sparkling. Even cleaned areas I hadn't thought about. Fair pricing too.",
@@ -262,7 +262,7 @@ export const reviews: Review[] = [
   {
     id: "r30",
     name: "Mick O.",
-    location: "Brisbane",
+    location: "Ipswich",
     rating: 5,
     content:
       "Been with Ritepro for over a year now. Same cleaner, same quality, every time. They even caught a small maintenance issue and flagged it for us before it became a big problem. Real value add.",
